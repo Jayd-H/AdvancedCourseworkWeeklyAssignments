@@ -37,7 +37,4 @@ int main (int argc, char **argv) {
 	const float fnum = 5.0;
 	cout << "Float: " << intnum << " Size: " << sizeof(float) << endl;
 
-	//const int intnum = 5;
-	//cout << "Integer: " << intnum << " Size: " << sizeof(intnum) << endl;
-
 }
