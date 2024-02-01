@@ -255,5 +255,60 @@ int main(int argn, char* argv[])
 
 ## Q6 Calculate Average using Iteration (while loop)
 
+### Question
 
+Q6. Calculate Average using Iteration (while loop)
+Using a while loop (or do-while loop), calculate the average value of values provided by the user from the console (cin). You should calculate the average after the user either enters a negative number or the user enters a non-number value (e.g. a letter).
 
+The following C++ code will get an int value from the user.
+```cpp
+cout << "Please enter an int value, then press Enter" << endl;
+int n = 0;
+cin >> n;
+```
+[LAB BOOK - Add your C++ code to your lab book. Then reflect on what you have learnt]
+
+### Answer
+
+I have created a simple program to do as intended.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	int sum = 0;
+	int divisor = 0;
+	do {
+		std::cout << "Enter an integer, enter '-1' to stop." << endl;
+		int n = 0;
+		cin >> n;
+
+		if (n < 0) {
+			break;
+		}
+
+		divisor += 1;
+		sum += n;
+		float total = static_cast<float>(sum) / divisor;
+
+		std::cout << "Total:" << total << endl;
+		std::cout << endl;
+
+	} while (true);
+
+	return 0;
+}
+```
+
+I initially had trouble getting this line to work as intended due to the equation not acting correctly between a float and an integer. This was corrected using static_cast.
+
+```cpp
+float total = static_cast<float>(sum) / divisor;
+```
+
+keep in mind this program lacks input validation and can be improved but that is not necessary.
+# Reflection
+
+During this lab, I have started to grasp the basics of C++ and the core differences of it and C#. I have gone through all the necessary functionality, including output, input, if statements, for loops, and while loops. Whilst the tasks were straightforward and easy, I appreciated the simplicity in order to highlight the beginning fundamentals of C++. I did not really have much trouble with creating any of these programs and I am excited gain a deeper understanding of the languages in the forthcoming weeks. 
