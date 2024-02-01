@@ -134,4 +134,101 @@ Once you’re confident you understand the logic, investigate:
 double z = x / y;
 How small does y have to be before you get a “divide by zero” error? Does the value of x affect the result?
 
+### Answer
 
+I ran this code
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	const double x = 10.0;
+	const double y = 10.0;
+	if (x == y) {
+		std :: cout << "X and Y are identical" << endl;
+	}
+}
+```
+And got the expected "X and Y are identical" output. I ran it multiple times and consistently got the same output.
+
+However, when I ran this code
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	const double x = 100000.123456789;
+	const double a = 200000.123456789;
+	double y = (x + a) / x;
+	double z = 1.0 + (a / x);
+	if (y == z) {
+		std :: cout << "X and Y are identical" << endl;
+	}
+}
+```
+
+I got no resulted output. I modified the code to print out all the values, which follow.
+
+x = 100000
+a = 200000
+y = 3
+z = 3
+
+I wanted to see how small I could get a number before a divide by zero error, so I wrote a simple program to test that.
+
+```cpp
+double oldvalue = 100.0;
+double divisor = 1.0;
+bool divisable = true;
+while (divisable) {
+	if (divisor == 0) {
+		std::cout << "Divisor has reached zero" << endl;
+		divisable = false;
+	}
+	double newvalue = oldvalue / divisor;
+	std::cout << "Old value: " << oldvalue << "  Divisor: " << divisor << "  New value: " << newvalue << endl;
+	divisor /= 2;
+}
+```
+
+In this code, the divisor should never reach 0, only infinitely approach it. The program falsely claims the divisor has reached 0 after it has done 4.94066e-324 / 2. Honestly, I thought it would have reached that conclusion earlier than it did. To test if oldvalue effected this, I modified the code slightly.
+
+```cpp
+oldvalue = oldvalue / divisor;
+std::cout << "Old value: " << oldvalue << "  Divisor: " << divisor << endl;
+```
+
+This did not effect the outcome, with the program still claiming the divisor has reached 0 after it has done 4.94066e-324 / 2.
+
+## Q5 C#/C++ Iteration Comparison (for loop)
+
+### Question
+
+In the lectures we have looked at constructs and iterators.
+
+Below is some C# code that calculates the factorial of a number (see https://www.mathsisfun.com/numbers/factorial.html for details of a factorial).
+
+```cpp
+static void Main(string[] args)
+{
+   int factorialNumber = 5;
+   int factorialTotal = 1;
+
+   for(int n = 2; n <= factorialNumber; ++n)
+   {
+      factorialTotal *= n;
+   }
+
+   System.Console.WriteLine(factorialTotal);
+}
+```
+
+Port the above C# code in to C++ using the provided Main.cpp file.
+
+[LAB BOOK - Add your C++ code to your lab book. Then reflect on what you have to change (or not change) from C# to C++ in terms of the iteration]
+
+### Answer
