@@ -232,3 +232,28 @@ Port the above C# code in to C++ using the provided Main.cpp file.
 [LAB BOOK - Add your C++ code to your lab book. Then reflect on what you have to change (or not change) from C# to C++ in terms of the iteration]
 
 ### Answer
+
+While converting this code from C# to C++ I was a little confused as the only things I had to change was the output of the total. I thought I must have misread it or something but I think I see the that the point is that C# and C++ share the same method for creating for loops. I also returned zero at the end because I read that it is good practice to do so, as it shows that the program completed successfully, even if the compiler will insert it for me, it's nice for readability.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	int factorialNumber = 5;
+	int factorialTotal = 1;
+	for (int n = 2; n <= factorialNumber; ++n) {
+		factorialTotal *= n;
+	}
+
+	std::cout << factorialTotal << endl;
+
+	return 0;
+}
+```
+
+## Q6 Calculate Average using Iteration (while loop)
+
+
+
