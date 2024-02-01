@@ -26,7 +26,7 @@ Also what happens if you dividing two integers?
 I followed the instructions and created a new project and coded my fahrenheit-celcius converter. After I wrote the program, I had a logic error where no matter what I inputted as the fahrenheit temperature, celcius would always appear as 0. I fixed this by changing the integers used in my conversion equations to include a decimal point.
 
 ### Code
-
+```cpp
 	#include <iostream>
 	using namespace std;
 
