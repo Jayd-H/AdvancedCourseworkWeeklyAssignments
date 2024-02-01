@@ -43,7 +43,7 @@ I followed the instructions and created a new project and coded my fahrenheit-ce
 		std::cout << "Celcius:" << ctemp << endl;
 
 	}
-
+```
 ##  Q3 Types
 
 ### Question
@@ -59,7 +59,7 @@ Remember to include both the signed and unsigned versions of each data type.
 I wrote a simple program to declare each of the fundamental datatypes, both signed and unsigned, and printed out the size of them all in memory.
 
 ### Code
-
+```cpp
 	#include <iostream>
 	using namespace std;
 
@@ -100,7 +100,7 @@ I wrote a simple program to declare each of the fundamental datatypes, both sign
 		cout << "Float: " << intnum << " Size: " << sizeof(float) << endl;
 
 	}
-
+```
 ## Q4 Floating point precision
 
 ### Question
@@ -108,22 +108,23 @@ I wrote a simple program to declare each of the fundamental datatypes, both sign
 In the lectures we discussed the precision of floating point numbers within C++, and how due to this precision the equality operator was unreliable.
 
 Write a simple program that includes the lines:
-
+```cpp
 	double x = 10.0;
 	double y = 10.0;
 	if (x == y)
 		cout << “X and Y are identical” << endl;
-	Did the program execute as expected?
-
+```
+Did the program execute as expected?
 Now try y = 20.0  / 2.0 and execute the program again.
 Then try a more complex calculation for y e.g.
-
+```cpp
 	const double x = 100000.123456789;
 	const double a = 200000.123456789;
 	double y = (x + a) / x;
 	double z = 1.0 + (a / x);
 	if (y == z) 
 	cout << “y and z are identical” << endl;
+```
 Now try different values for x and a
 
 Printing out the values of x, y and z, may be useful in helping you form an opinion of what is happening.
