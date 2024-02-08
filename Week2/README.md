@@ -27,6 +27,8 @@ Run this code and enter into the console window an integer followed by a space a
 
 ### Answer
 
+I ran the program and entered "56 2.1", the program returned "i=56, f=2.1".
+
 ## Q1 The Good >> Streaming Operator
 
 ### Question
