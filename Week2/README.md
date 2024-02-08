@@ -293,4 +293,123 @@ In release mode it is virtually impossible to associate a piece of assembly with
 
 Enjoy assembly language!!
 
+### Answer
 
+I opened 'Source.cpp' and placed a breakpoint on line 5. I ran the program and stepped through it with the locals window open, watching the 'total' value begin at 3 during its first pass, then change to 7, 12, 18, 25, 33, and ending with 42, with confirmation from a console output "Total= 42".
+
+I then re ran my code with the same break point and used the dissasembler to see the assembly.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int, char**) {
+003D2490  push        ebp  
+003D2491  mov         ebp,esp  
+003D2493  sub         esp,0F0h  
+003D2499  push        ebx  
+003D249A  push        esi  
+003D249B  push        edi  
+003D249C  lea         edi,[ebp-30h]  
+003D249F  mov         ecx,0Ch  
+003D24A4  mov         eax,0CCCCCCCCh  
+003D24A9  rep stos    dword ptr es:[edi]  
+003D24AB  mov         ecx,offset _9FCC0E96_Source@cpp (03DF066h)  
+003D24B0  call        @__CheckForDebuggerJustMyCode@4 (03D1398h)  
+	const int start = 3;
+003D24B5  mov         dword ptr [start],3  
+	const int end = 10;
+003D24BC  mov         dword ptr [end],0Ah  
+	int total = 0;
+003D24C3  mov         dword ptr [total],0  
+
+	int count = start;
+003D24CA  mov         dword ptr [count],3  
+	while (count < end) {
+003D24D1  cmp         dword ptr [count],0Ah  
+003D24D5  jge         __$EncStackInitStart+4Fh (03D24EBh)  
+		total += count;
+003D24D7  mov         eax,dword ptr [total]  
+003D24DA  add         eax,dword ptr [count]  
+003D24DD  mov         dword ptr [total],eax  
+		count++;
+003D24E0  mov         eax,dword ptr [count]  
+003D24E3  add         eax,1  
+003D24E6  mov         dword ptr [count],eax  
+	}
+003D24E9  jmp         __$EncStackInitStart+35h (03D24D1h)  
+
+	cout << "Total= " << total << endl;
+003D24EB  mov         esi,esp  
+003D24ED  push        offset std::endl<char,std::char_traits<char> > (03D103Ch)  
+003D24F2  mov         edi,esp  
+003D24F4  mov         eax,dword ptr [total]  
+003D24F7  push        eax  
+003D24F8  push        offset string "Total= " (03D9B30h)  
+003D24FD  mov         ecx,dword ptr [__imp_std::cout (03DD0D8h)]  
+003D2503  push        ecx  
+003D2504  call        std::operator<<<std::char_traits<char> > (03D11B3h)  
+003D2509  add         esp,8  
+003D250C  mov         ecx,eax  
+003D250E  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (03DD0A0h)]  
+003D2514  cmp         edi,esp  
+003D2516  call        __RTC_CheckEsp (03D129Eh)  
+003D251B  mov         ecx,eax  
+003D251D  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (03DD0A4h)]  
+003D2523  cmp         esi,esp  
+003D2525  call        __RTC_CheckEsp (03D129Eh)  
+
+	return 0;
+003D252A  xor         eax,eax  
+}
+003D252C  pop         edi  
+003D252D  pop         esi  
+003D252E  pop         ebx  
+003D252F  add         esp,0F0h  
+003D2535  cmp         ebp,esp  
+003D2537  call        __RTC_CheckEsp (03D129Eh)  
+003D253C  mov         esp,ebp  
+003D253E  pop         ebp  
+003D253F  ret  
+```
+
+I then opened the registers window.
+
+EAX = 003DF066 EBX = 0110B000 ECX = 003DF066 EDX = 00000001 ESI = 003D1023 EDI = 0136FA28 EIP = 003D24B5 ESP = 0136F92C EBP = 0136FA28 EFL = 00000246 
+0x0136FA20 = CCCCCCCC 
+
+I then stepped through my program, seeing specific registers change and highlighted in red when they do so. I opened the memory 1 window and changed the address from "0x0029F7E0" to the ESP address "008FFC58". I then stepped through the program with this open and saw specific values of the variables used in the program being changed, highlighting in red when they do so.
+
+I changed to release mode and opened the assembly code once more.
+
+```cpp
+	const int start = 3;
+	const int end = 10;
+	int total = 0;
+
+	int count = start;
+	while (count < end) {
+		total += count;
+		count++;
+	}
+
+	cout << "Total= " << total << endl;
+00581000  mov         ecx,dword ptr [__imp_std::cout (0583060h)]  
+00581006  push        offset std::endl<char,std::char_traits<char> > (0581300h)  
+0058100B  push        2Ah  
+0058100D  call        std::operator<<<std::char_traits<char> > (05810F0h)  
+00581012  mov         ecx,eax  
+00581014  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0583034h)]  
+0058101A  mov         ecx,eax  
+0058101C  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (058303Ch)]  
+
+	return 0;
+00581022  xor         eax,eax  
+}
+00581024  ret  
+```
+
+I stepped through the program with the memory window open and watched it execute the assembly line by line, almost mesmerised.
+
+## Reflection
+During this lab I have gained a deeper knowledge of the best practices for creating arrays in c++, when and when not to use >> over alternative methods when taking user inputs. More interestingly, I have began to understand what is actually happening line by line whilst executing code, familiarising myself with assembly and the various windows available for debugging. I am glad to have learnt this knowledge and am excited to bring these new tools with me when creating programs in c++.
