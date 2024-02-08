@@ -53,7 +53,7 @@ Then output the string value to the console after you output the float value.
 
 ### Answer
 
-## Q2 The BAd >> Streaming Operator
+## Q2 The Bad >> Streaming Operator
 
 ### Question
 
