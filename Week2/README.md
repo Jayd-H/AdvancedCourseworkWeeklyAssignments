@@ -27,6 +27,8 @@ Run this code and enter into the console window an integer followed by a space a
 
 ### Answer
 
+I ran the program and entered "56 2.1", the program returned "i=56, f=2.1".
+
 ## Q1 The Good >> Streaming Operator
 
 ### Question
@@ -51,7 +53,25 @@ Then output the string value to the console after you output the float value.
 
 ### Answer
 
-## Q2 The BAd >> Streaming Operator
+I modified the code to look like this.
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	int i;
+	float f;
+	string s;
+	cin >> i >> f >> s;
+	cout << "i=" << i << ", f=" << f << ", s=" << s << endl;
+}
+```
+I then entered "32 3.4 thirtyfour" and the programmed returned with "i=34, f=3.4, s=thirtyfour".
+
+
+## Q2 The Bad >> Streaming Operator
 
 ### Question
 
