@@ -53,6 +53,24 @@ Then output the string value to the console after you output the float value.
 
 ### Answer
 
+I modified the code to look like this.
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	int i;
+	float f;
+	string s;
+	cin >> i >> f >> s;
+	cout << "i=" << i << ", f=" << f << ", s=" << s << endl;
+}
+```
+I then entered "32 3.4 thirtyfour" and the programmed returned with "i=34, f=3.4, s=thirtyfour".
+
+
 ## Q2 The Bad >> Streaming Operator
 
 ### Question
