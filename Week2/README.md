@@ -68,7 +68,7 @@ int main(int argn, char* argv[])
 	cout << "i=" << i << ", f=" << f << ", s=" << s << endl;
 }
 ```
-I then entered "32 3.4 thirtyfour" and the programmed returned with "i=34, f=3.4, s=thirtyfour".
+I then entered "32 3.4 thirtyfour" and the programmed returned with "i=34, f=3.4, s=thirtyfour". This is done by first taking three inputs from the user on the same line followed by a space, an int, a float, a string, then outputting them back through the console.
 
 
 ## Q2 The Bad >> Streaming Operator
