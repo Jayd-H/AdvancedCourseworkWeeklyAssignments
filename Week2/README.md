@@ -113,6 +113,42 @@ This code will store up to 4 values followed by the end of array character. Run 
 
 ### Answer
 
+I first ran the code above. 
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+   char c[5];
+   cin >> c;
+   cout << "c=" << c << endl;
+}
+```
+
+I inputted '123' and inspected the 'c' array with the autos window. I saw the first 3 values with '1','2', and '3' respectively, followed by '\0' and'Ì' as the last value. When I stepped through the output from the console was the expected 'c=123'. I then ran the program again, inputted '123456789', and saw with the autos window that the array only stored the first 5 values in the array "1", "2", "3", "4", and "5". As I stepped through, the program gave me the error "Run-Time Check Failure #2 - Stack around the variable 'c' was corrupted.".
+
+When I changed to release mode and inputted "123456789" into the console, the program outputted the whole array of characters, however visual studio seemed to have realised something was wrong and gave me this error "Unhandled exception at 0x00C11DB9 in Streaming.exe: Stack cookie instrumentation code detected a stack-based buffer overrun.".
+
+I then altered by code accordingly.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	char c[5];
+	cin.get(c, 5);
+	cout << "c=" << c << endl;
+}
+```
+
+I put a breakpoint on line 8, ran the program and inputted "1234", and inspected the values with the auto window. As expected, it correctly stored the 4 characters with an end of array character at the end, and outputted "c=1234". I reran the program, this time inputting "123456789" and checked the autos window to the same result, the first four characters saved with an end of array character at the end. The program still outputted "c=1234".
+
+the .get() function seems to be superior than the >> streaming operator when dealing with arrays like these due to its reliability and robustness, always only storing the valid number of characters possible.
+
 ## Q3 Assembly Language
 
 ### Question
@@ -256,3 +292,5 @@ Step through your code. If it still exists it has been greatly optimized. Much o
 In release mode it is virtually impossible to associate a piece of assembly with its original C++.
 
 Enjoy assembly language!!
+
+
