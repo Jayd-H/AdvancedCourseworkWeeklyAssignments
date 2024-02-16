@@ -567,4 +567,4 @@ The assembly code changed accordingly
 ---
 
 ## Reflection
-
+This week I have gained further knowledge of using the library 'fstream' which provides facilities for file-based input and output. Using my newly found knowledge of arguments in C++, I created a basic file copy-paste program. Through this, I have also learnt when and when not to use a string or char datatype when copying data from one file to another. I have also increased my familiarity with debugging in visual studio, getting more comfortable with viewing variable data in the memory dump. Through assembly, I have began to grasp the basics of how functions work at a fundamental level, with this hands-on experience being beneficial to my future with C++, when I innevitably work with much more complex programs. Overall, the ideas I have gone through today represent very valuable, useful knowledge I can take into future projects. I am excited too see a more in-depth use-case of the things I learnt today and feel more confident in my understanding of them.
