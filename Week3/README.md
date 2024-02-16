@@ -218,11 +218,13 @@ output.close();
 return true;
 ```
 
-I thought about instead of doing this character by character, doing it line by line. Character by character is more straightforward to implement, to my understanding more efficient with memory, and can support binary files better (as it copies every byte exactly as is without interpretting the data). However, copying line by line is generally faster for text files as it reduces the number of read/write operations, and it also allows convenience for text processing if you want to manipulate the data (such as filtering lines). For this use case I went with character by character as we have no need for text processing and performance is not an issue.
+I thought about instead of doing this character by character, doing it line by line. Character by character is more straightforward to implement, to my understanding more efficient with memory, and can support binary files better (as it copies every byte exactly as is without interpretting the data). However, copying line by line is generally faster for text files as it reduces the number of read/write operations, and it also allows convenience for text processing if you want to manipulate the data (such as filtering lines). For this use case I went with character by character as we have no need for text processing and performance is not an issu (and also because the question specified to).
 
 ---
 
 ## Q3. Function call mechanism
+
+### Question
 
 Locate the **Solution Explorer** within Visual Studio and select the **Functions** project.
 
@@ -253,7 +255,7 @@ We want our program to calculate which of the two variable `a` and `b` is the la
 
 Compile and run the program.
 
-### Disassemble
+#### Disassemble
 
 View `source.cpp` within Visual Studio.
 
@@ -399,7 +401,7 @@ Your stack should look similar to the stack dump below
 
 Hit **F5** to execute the program to completion.
 
-### Data sizes
+#### Data sizes
 
 In `source.cpp` we use variables `a` and `b`.  How many bytes do each of these variables occupy in memory?
 
@@ -407,10 +409,162 @@ Look at the memory dump above; can you verify your answer?
 
 Each of the registers we have used so far in this program have been 32-bits in size e.g. EAX.  Look at the register window.  The values in each register are represented by 8 digits; 2 digits for each byte.
 
-### Parameter types
+#### Parameter types
 
 Now modify the code and add in your own function that takes 3 parameters each of a different type.
 
 From what you have learnt in the previous exercises, use the Debugger and Disassembly to investigate how the C++ parameter passing mechanism deals with these new parameters.
 
+### Answer
+
+I ran the program and verified that it worked. I placed a breakpoint and got this assembly.
+
+```asm
+int main(int, char**) {
+00A024F0  push        ebp  
+00A024F1  mov         ebp,esp  
+00A024F3  sub         esp,0E4h  
+00A024F9  push        ebx  
+00A024FA  push        esi  
+00A024FB  push        edi  
+00A024FC  lea         edi,[ebp-24h]  
+00A024FF  mov         ecx,9  
+00A02504  mov         eax,0CCCCCCCCh  
+00A02509  rep stos    dword ptr es:[edi]  
+00A0250B  mov         ecx,offset _1941878C_Source@cpp (0A0F066h)  
+00A02510  call        @__CheckForDebuggerJustMyCode@4 (0A0139Dh)  
+
+	int a = 10;
+00A02515  mov         dword ptr [a],0Ah  
+	int b = 20;
+00A0251C  mov         dword ptr [b],14h  
+
+	int max = mymax(a, b);
+00A02523  mov         eax,dword ptr [b]  
+00A02526  push        eax  
+00A02527  mov         ecx,dword ptr [a]  
+00A0252A  push        ecx  
+00A0252B  call        mymax (0A011DBh)  
+00A02530  add         esp,8  
+00A02533  mov         dword ptr [max],eax  
+
+	cout << "a=" << a << ", b=" << b << endl;
+00A02536  mov         esi,esp  
+00A02538  push        offset std::endl<char,std::char_traits<char> > (0A0103Ch)  
+00A0253D  mov         edi,esp  
+00A0253F  mov         eax,dword ptr [b]  
+00A02542  push        eax  
+00A02543  push        offset string ", b=" (0A09B30h)  
+00A02548  mov         ebx,esp  
+00A0254A  mov         ecx,dword ptr [a]  
+00A0254D  push        ecx  
+00A0254E  push        offset string "a=" (0A09B38h)  
+00A02553  mov         edx,dword ptr [__imp_std::cout (0A0D0D8h)]  
+00A02559  push        edx  
+00A0255A  call        std::operator<<<std::char_traits<char> > (0A011B3h)  
+00A0255F  add         esp,8  
+00A02562  mov         ecx,eax  
+00A02564  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0A0D0A0h)]  
+00A0256A  cmp         ebx,esp  
+00A0256C  call        __RTC_CheckEsp (0A012A3h)  
+00A02571  push        eax  
+00A02572  call        std::operator<<<std::char_traits<char> > (0A011B3h)  
+00A02577  add         esp,8  
+00A0257A  mov         ecx,eax  
+00A0257C  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0A0D0A0h)]  
+00A02582  cmp         edi,esp  
+00A02584  call        __RTC_CheckEsp (0A012A3h)  
+00A02589  mov         ecx,eax  
+00A0258B  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0A0D0A4h)]  
+00A02591  cmp         esi,esp  
+00A02593  call        __RTC_CheckEsp (0A012A3h)  
+	cout << "max=" << max << endl;
+00A02598  mov         esi,esp  
+00A0259A  push        offset std::endl<char,std::char_traits<char> > (0A0103Ch)  
+00A0259F  mov         edi,esp  
+00A025A1  mov         eax,dword ptr [max]  
+00A025A4  push        eax  
+00A025A5  push        offset string "max=" (0A09B3Ch)  
+00A025AA  mov         ecx,dword ptr [__imp_std::cout (0A0D0D8h)]  
+00A025B0  push        ecx  
+00A025B1  call        std::operator<<<std::char_traits<char> > (0A011B3h)  
+00A025B6  add         esp,8  
+00A025B9  mov         ecx,eax  
+00A025BB  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0A0D0A0h)]  
+00A025C1  cmp         edi,esp  
+00A025C3  call        __RTC_CheckEsp (0A012A3h)  
+00A025C8  mov         ecx,eax  
+00A025CA  call        dword ptr [__imp_std::basic_ostream<char,std::char_traits<char> >::operator<< (0A0D0A4h)]  
+00A025D0  cmp         esi,esp  
+00A025D2  call        __RTC_CheckEsp (0A012A3h)  
+
+	return 0;
+00A025D7  xor         eax,eax  
+}
+00A025D9  pop         edi  
+00A025DA  pop         esi  
+00A025DB  pop         ebx  
+00A025DC  add         esp,0E4h  
+00A025E2  cmp         ebp,esp  
+00A025E4  call        __RTC_CheckEsp (0A012A3h)  
+00A025E9  mov         esp,ebp  
+00A025EB  pop         ebp  
+00A025EC  ret  
+```
+After taking note of how the mymax function is being executed in assembly, I had a look at the output stream function too. I stepped through and watched the program "draw" the output to the console window, starting with "a=" and a few steps later adding the value, before going onto the next. 
+
+I executed the program again, stepping to the desired line and noted the EAX register of "00000014". I used the stack pointer address to see the memory change when executing through the instructions of the function mymax.
+
+Because both variable, "a", and "b", are integers, they take up four bytes of memory. I can confirm this by looking at the memory dump of where the stack pointer is when they are initialised. A = 0a 00 00 00. B = 14 00 00 00.
+
+I modified the program to take in three parameters, checking which integer is larger. 
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int mymax(int a, int b, int c)
+{
+	if (a > b && a > c)
+		return a;
+	else if (b > a && b > c)
+		return b;
+	else
+		return c;
+
+}
+
+int main(int, char**) {
+
+	int a = 10;
+	int b = 20;
+	int c = 30;
+
+	int max = mymax(a, b, c);
+
+	cout << "a=" << a << ", b=" << b << endl;
+	cout << "max=" << max << endl;
+
+	return 0;
+}
+```
+
+The assembly code changed accordingly
+
+```asm
+	int max = mymax(a, b, c);
+00AC252A  mov         eax,dword ptr [c]  
+00AC252D  push        eax  
+00AC252E  mov         ecx,dword ptr [b]  
+00AC2531  push        ecx  
+00AC2532  mov         edx,dword ptr [a]  
+00AC2535  push        edx  
+00AC2536  call        mymax (0AC1451h)  
+00AC253B  add         esp,0Ch  
+00AC253E  mov         dword ptr [max],eax  
+```
+
 ---
+
+## Reflection
+
