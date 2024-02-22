@@ -46,7 +46,10 @@ void functionD() {
 
 	cout << "x= " << x << endl;
 
-	// Add code here
+	double *q = &x;
+	double *p = q;
+
+	*p = 2.1;
 
 	cout << "x= " << x << endl;
 }
@@ -57,6 +60,5 @@ int main(int, char**) {
 	//functionB();
 	//functionC();
 	functionD();
-
 	return 0;
 }
