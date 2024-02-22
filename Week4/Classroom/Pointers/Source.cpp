@@ -54,11 +54,24 @@ void functionD() {
 	cout << "x= " << x << endl;
 }
 
+void functionE() {
+	int a = 10;
+	void* p1 = &a; 
+	void* p2 = &p1; 
+	void* p3 = &p2; 
+	void* p4 = &p3;  
+
+
+	p1 = &p4;
+
+}
+
 int main(int, char**) {
 
 	//functionA();
 	//functionB();
 	//functionC();
-	functionD();
+	//functionD();
+	functionE();
 	return 0;
 }
