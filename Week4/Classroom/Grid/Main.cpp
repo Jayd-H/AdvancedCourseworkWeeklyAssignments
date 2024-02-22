@@ -6,7 +6,7 @@ int main(int argn, char* argv[])
 {
 	Grid grid;
 	grid.LoadGrid("Grid1.txt");
-	grid.SaveGrid("OutGrid.txt");
+	// grid.SaveGrid("OutGrid.txt");
 
 	system("pause");
 }
