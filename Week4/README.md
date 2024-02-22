@@ -176,12 +176,39 @@ The LoadGrid function is defined, it opens a file with the filename passed into 
 ---
 
 ## Q3. Saving the Grid
-
+### Question
 Implement the `SaveGrid(const char filename[])` method.
 This method will save the values of `m_grid` in a similar format to that of the `Grid1.txt` file.
 Please use another name for the output file so that your `Grid1.txt` file is not overwritten.
 
 **[LAB BOOK - Add you code for method `Grid::SaveGrid` and describe how you implemented it]**
+
+### Answer
+
+```cpp
+void Grid::SaveGrid(const char filename[])
+{
+    std::ofstream fileStream(filename);
+
+    if (!fileStream)
+    {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            fileStream << m_grid[y][x] << " ";
+        }
+        fileStream << std::endl;
+    }
+    fileStream.close();
+}
+```
+
+Tge SaveGrid function is defined, it opens a file with the filename passed into it, then validates if it is able to open that file. If it can, it starts two loops from 0-8 inclusive, representing the x and y axis for this 9x9 array. After every column, it outputs the value present in m_grid separated by a space, and after every row it creates a new line. After it has finished, it closes the file stream. 
 
 ---
 
