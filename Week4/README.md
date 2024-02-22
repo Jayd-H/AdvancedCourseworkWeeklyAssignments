@@ -260,6 +260,7 @@ I added the line of code ``` *p = 100; ``` where the comment for adding code was
 ---
 
 ## Q5. Pointers - False assumptions
+### Question
 
 Comment out the call to `functionA` and uncomment the call to `functionB`.
 
@@ -312,6 +313,9 @@ The pointer does get advanced by 4 bytes, but the memory location is invalid.  J
 If you want to do this sort of pointer arithmetic then you need to guarantee the memory layout.  Arrays are a way to achieve this.  We’ll look at these later in the module.
 
 For now, just be careful using pointer arithmetic.  This time we were lucky and the C++ run time checking detected the error for us.  You cannot rely on the run time finding more complex errors.
+
+### Answer
+I edited the functionB code to try and advance the pointer 4 bytes in memory from the location of variable 'b' only to be met by "Run-Time Check Failure #2 - Stack around the variable 'b' was corrupted". I expected this to not work but I did not have a reason to really suspect that. Now I know that just because we list variables `a`, `b`, and `c` sequentially in our programme, does not guarantee that the compiler places them contiguously in memory.
 
 ---
 
