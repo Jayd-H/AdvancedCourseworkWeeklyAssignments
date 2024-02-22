@@ -213,7 +213,7 @@ Tge SaveGrid function is defined, it opens a file with the filename passed into 
 ---
 
 ## Q4. Pointers - Basics
-
+### Question
 Open the project "Pointers"
 
 Located the following code in source.cpp file:
@@ -253,6 +253,9 @@ Run the code to the breakpoint, then single-step through the code whilst looking
 Notice how `a` and `b` are initialized with values 10 and 20, and that pointer `p` is assigned a hexadecimal value.  This value is the memory location of `a`.
 
 Open a **Memory window**.   Copy the value of `p` into the address field of the **Memory window** and confirm that you are looking at variable `a` in memory.
+
+### Answer
+I added the line of code ``` *p = 100; ``` where the comment for adding code was. I put a breakpoint on the first line and stepped through until I got the memory address of integer 'a' through integer pointer 'p', '0x006FFA44'. I pasted this address into a memory window and saw where in memory the integer was stored. 
 
 ---
 
