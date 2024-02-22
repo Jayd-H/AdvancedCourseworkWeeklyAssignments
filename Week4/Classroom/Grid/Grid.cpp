@@ -27,4 +27,23 @@ void Grid::LoadGrid(const char filename[])
     fileStream.close();
 }
 
+void Grid::SaveGrid(const char filename[])
+{
+    std::ofstream fileStream(filename);
 
+    if (!fileStream)
+    {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            fileStream << m_grid[y][x] << " ";
+        }
+        fileStream << "/n";
+    }
+    fileStream.close();
+}
