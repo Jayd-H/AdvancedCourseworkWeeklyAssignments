@@ -122,7 +122,7 @@ int main(int argn, char* argv[])
 
 Try to compile your code - you should get a **Linker Error** that looks something like the following.
 
-![alt text](README-linker-error2.png "Linker Error")
+![alt text](Classroom/README-linker-error2.png "Linker Error")
 
 The **LNK** again is telling you that the linker could not find something, in this case it could not find the source code for the `Grid::LoadGrid(char const * const)` method.  This is because we have specified the prototype in the `Grid.h` file, but we have not yet implemented this method in the `Grid.cpp` file.
 
