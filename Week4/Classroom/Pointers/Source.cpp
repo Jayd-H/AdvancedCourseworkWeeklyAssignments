@@ -26,6 +26,8 @@ void functionB() {
 	cout << "c= " << c << endl;
 
 	*p = 100;
+	p++;
+	*p = 200;
 
 	cout << "a= " << a << endl;
 	cout << "b= " << b << endl;
@@ -51,8 +53,8 @@ void functionD() {
 
 int main(int, char**) {
 
-	functionA();
-	//functionB();
+	//functionA();
+	functionB();
 	//functionC();
 	//functionD();
 
