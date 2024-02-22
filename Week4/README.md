@@ -144,11 +144,13 @@ You will need to include the `fstream` library in your `Grid.cpp` file.
 
 After you have implemented this, step through this method to make sure that it correctly reads and stores the values of the grid file into m_grid - it should look something similar to the values below.
 
-![alt text](README-debug1.png "Linker Error")
+![alt text](Classroom/README-debug1.png "Linker Error")
 
 **[LAB BOOK - Add you code for method `Grid::LoadGrid` and describe how you implemented it]**
 
 ### Answer
+
+The program starts by including the necessary libraries and defining an empty constructor and destructor. The LoadGrid function is then defined, it opens a file with the filename passed into it, then validates if it is able to open that file. If it can, it starts two for loops from 0-8 inclusive, representing the x and y axis for this 9x9 array. after every pass through, it stores the value at the coordinates x and y into the grid m_grid. After it has finished, it closes the file stream. 
 ---
 
 ## Q3. Saving the Grid
