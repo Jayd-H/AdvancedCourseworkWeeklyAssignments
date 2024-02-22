@@ -346,6 +346,7 @@ I ran the program initially and it crashed, giving me "Exception thrown: write a
 
 
 ## Q7. Pointers - Pointers to pointers
+### Question
 
 Comment out the call to `functionC` and uncomment the call to `functionD`.
 
@@ -359,6 +360,29 @@ Then add the code to change the value of `x` by using only pointer `p`.
 
 Compile and run the program.  Checking your solution with the debugger and disassembler.
 
+### Answer
+I altered function D. 
+
+```cpp
+void functionD() {
+	double x = 3.14;
+
+	cout << "x= " << x << endl;
+
+	double *q = &x;
+	double *p = q;
+
+	*p = 2.1;
+
+	cout << "x= " << x << endl;
+}
+```
+I initialized a new double pointer 'q' and pointed it to the memory address of 'x'. I then initialized a new double pointer 'p' then pointed it to 'q', therefore pointing it to the memory address of 'x'. By altering the pointer value of 'p', it actually travels down the chain of pointers and changes the value of x. This code works as intended, with the console outputting:
+
+```
+x= 3.14
+x= 2.1
+```
 ---
 
 ## Q8. Pointers - Pointer chains (optional)
