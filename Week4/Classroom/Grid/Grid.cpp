@@ -43,7 +43,7 @@ void Grid::SaveGrid(const char filename[])
         {
             fileStream << m_grid[y][x] << " ";
         }
-        fileStream << "/n";
+        fileStream << std::endl;
     }
     fileStream.close();
 }
