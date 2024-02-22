@@ -13,11 +13,3 @@ private:
 	int m_grid[9][9];
 
 };
-
-Grid::Grid()
-{
-}
-
-Grid::~Grid()
-{
-}
