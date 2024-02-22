@@ -386,9 +386,28 @@ x= 2.1
 ---
 
 ## Q8. Pointers - Pointer chains (optional)
-
+### Question
 How would you implement the following in C++?
 
 ![alt text](Classroom/README-pointerchains.png "Linker Error")
 
 **Hint:** You might find `void` useful.
+
+### Answer
+Creating a loop of 4 pointers where each pointer points to the next one, and the last pointer points back to the first one is possible, however, can be dangerous as it leads to confusion, undefined behavior and bugs that are hard to track. 
+
+Here is an example of this pointer chain.
+
+```cpp
+void functionE() {
+	int a = 10;
+	void* p1 = &a; 
+	void* p2 = &p1; 
+	void* p3 = &p2; 
+	void* p4 = &p3;  
+
+	p1 = &p4;
+}
+```
+
+I had to use pointers of the 'void' type as it is a generic pointer type in C++ that can point to any type of data.
