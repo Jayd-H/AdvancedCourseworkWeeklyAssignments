@@ -349,7 +349,7 @@ I ran the program initially and it crashed, giving me "Exception thrown: write a
 
 Comment out the call to `functionC` and uncomment the call to `functionD`.
 
-![alt text](README-pointer2pointer.png "Linker Error")
+![alt text](Classroom/README-pointer2pointer.png "Linker Error")
 
 Add code, at the position identified by the comment, to implement the above pointer chain.
 
@@ -365,6 +365,6 @@ Compile and run the program.  Checking your solution with the debugger and disas
 
 How would you implement the following in C++?
 
-![alt text](README-pointerchains.png "Linker Error")
+![alt text](Classroom/README-pointerchains.png "Linker Error")
 
 **Hint:** You might find `void` useful.
