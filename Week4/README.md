@@ -411,3 +411,10 @@ void functionE() {
 ```
 
 I had to use pointers of the 'void' type as it is a generic pointer type in C++ that can point to any type of data.
+
+## Reflection
+Through this lab I have furthered my ability of understanding the basics of classes in C++. Whilst not directly adding anything to them, I understood more about how constructors and destructors work, and have implemented my first C++ header file.
+
+In the second part of this lab, I increased familiarity with pointers in C++. Implementing basic functions that feature them to achieve simple goals. I have furthered my knowledge of use cases, and understood how to use the debugging tools in visual studio to see exactly where a pointer is pointing to in memory. I understand more on the power and constraints that pointers can bring to a program, and I even did the silly optional task of the dangerous pointer chain.
+
+I am very excited to continue understanding the complex language of C++ and I cannot wait to see how pointers will play out in a more real-world environment when programming in C++.
