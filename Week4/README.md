@@ -319,7 +319,9 @@ I edited the functionB code to try and advance the pointer 4 bytes in memory fro
 
 ---
 
-### Q6. Pointers - The crash
+## Q6. Pointers - The crash
+
+### Question
 
 Comment out the call to `functionB` and uncomment the call to `functionC`.
 
@@ -338,6 +340,10 @@ Single-step through the code and determine the reason for the crash.
 The Windows operating system attempts to prevent applications from damaging other applications.  This error message is from Windows telling you that your code has attempted to access a memory location outside of its permitted memory footprint.
 
 ---
+
+### Answer
+I ran the program initially and it crashed, giving me "Exception thrown: write access violation. p was 0xFF00FF.". I suspect this is because the function attempts to assign the value '999' to a point in memory which is invalid or not accessible by the program. From my understanding, a "write access violation" happens when a program does not have permission to write to a specific memory address because the operating system is not allowing it. This will be to prevent breaking core parts of memory essential for running the computer.
+
 
 ## Q7. Pointers - Pointers to pointers
 
