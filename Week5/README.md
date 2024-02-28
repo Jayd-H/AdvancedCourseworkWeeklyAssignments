@@ -924,3 +924,9 @@ result2: 20
 In this example, the final result is 20. This seems unexpected, however, because the clamp function does not actually clamp the two values and instead returns references to the temporary values 'low' and 'high'. This leads to undefined behaviour where the last evaluated expression's result is used for both additions, ending up with essentially 10 + 10 = 20.
 
 ## Reflection
+
+During this lab I have gained a much greater understanding on how classes can work in C++. I have gathered introductory experience with overloading operators to create cleaner, more easily understandable code, something I have not done prior. I have began to understand the idea of what 'friends' are in C++ and what they can accomplish. I have more experience with general object oriented related programming in C++ also, dealing with header files and their benefits and limits. I managed to code a fraction calculator which, while in it's current state could use a lot of improvement (simplifying fractions etc.), made me feel more comfortable working with more advanced abstraction. I understand the difference between class methods and auxiliary functions, as well as when or when not to apply inline to functions.
+
+Furthermore, I have gained more familiarity with functions that pass by value, reference, and address, when and when not to implement them, and the benefits they bring.
+
+I feel like I am really coming into my own in my C++ development, and while I guarantee I still have a lot to learn, I am overall happy with my progress and feel a lot more comfortable in the language than when I first started.
