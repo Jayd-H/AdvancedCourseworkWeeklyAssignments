@@ -6,7 +6,7 @@ This tutorial introduces the reader to using operators and parameters in C++.
 
 ## Q1. Operators in Grid
 
-### Answer
+### Question
 
 Extend your code from Q2 and Q3 in Lab D. 
 
@@ -18,8 +18,71 @@ Add the following functionality to your program:
 **[LAB BOOK - Copy your code for these functions into your lab book]**
 
 ---
-### Question
+### Answer
 
+```cpp
+#pragma once
+#include <iostream>
+
+class Grid
+{
+public:
+	Grid();
+	~Grid();
+
+	void LoadGrid(const char filename[]);
+	void SaveGrid(const char filename[]);
+	friend std::ostream& operator << (std::ostream& os, const Grid& grid);
+	friend std::istream& operator >> (std::istream& is, Grid& grid);
+
+private:
+	int m_grid[9][9];
+
+};
+```
+
+```cpp
+std::ostream& operator << (std::ostream& os, const Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            os << grid.m_grid[y][x] << " ";
+        }
+        os << std::endl;
+    }
+    return os;
+}
+
+std::istream& operator >> (std::istream& is, Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            is >> grid.m_grid[y][x];
+        }
+    }
+    return is;
+}
+```
+
+```cpp
+#include <iostream>
+#include "Grid.h"
+using namespace std;
+
+int main(int argn, char* argv[])
+{
+	Grid grid;
+	std::cin >> grid;
+	std::cout << endl;
+	std::cout << grid << std::endl;
+
+	system("pause");
+}
+```
+
+I created functions that allow the user to input and output a grid. Doing them this way is better as it more natively works with the streaming operators, leading to easier to work with and understand code. Instead of outputting a grid to console using ```LoadGrid()```, you can output it with ```std::cout << grid << std::endl;```.
 ## Q2. Fractions
 
 Open the **Fractions** project
