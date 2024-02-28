@@ -152,6 +152,154 @@ int main(int args, char** argv)
 
 ### Answer
 
+#### fraction.cpp
+```cpp
+#include <iostream>
+#include <assert.h>
+#include "fraction.h"
+
+// default constructor
+Fraction::Fraction() {
+	Num(0); Den(1);
+}
+
+// specific constructor
+Fraction::Fraction(int num, int den) {
+	Num(num); Den(den);
+}
+
+// arithmetic operations
+Fraction Fraction::Add(const Fraction& rhs) const {
+	return Fraction(Num() * rhs.Den() + Den() * rhs.Num(), Den() * rhs.Den());
+}
+
+Fraction Fraction::Subtract(const Fraction& rhs) const {
+	return Fraction(Num() * rhs.Den() - Den() * rhs.Num(), Den() * rhs.Den());
+}
+
+Fraction Fraction::Multiply(int scale) const {
+	return Fraction(Num() * scale, Den());
+}
+
+Fraction Fraction::Divide(int scale) const {
+	assert(scale != 0);
+	return Fraction(Num(), Den() * scale);
+}
+
+// getters and setters
+
+int Fraction::Num() const {
+	return m_num;
+}
+
+int Fraction::Den() const {
+	return m_den;
+}
+
+void Fraction::Num(int num) {
+	m_num = num;
+}
+
+void Fraction::Den(int den) {
+	assert(den);
+	m_den = den;
+}
+
+// input and output
+
+void Fraction::Write(std::ostream& out) const {
+	out << Num() << "/" << Den();
+}
+
+void Fraction::Read(std::istream& in) {
+	int num, den;
+	in >> num >> den;
+	Num(num); Den(den);
+}
+```
+#### fraction.h
+```cpp
+#pragma once
+#include <iostream>
+
+class Fraction {
+public:
+	// default constructor
+	Fraction();
+	// specific constructor
+	Fraction(int num, int den);
+
+	// arithmetic operations
+	Fraction Add(const Fraction& rhs) const;
+	Fraction Subtract(const Fraction& rhs) const;
+	Fraction Multiply(int scale) const;
+	Fraction Divide(int scale) const;
+
+	// getters and setters
+	int Num() const;
+	int Den() const;
+
+	void Num(int num);
+	void Den(int den);
+
+	// input and output
+	void Write(std::ostream& out) const;
+	void Read(std::istream& in);
+
+	private:
+		int m_num;
+		int m_den;
+};
+```
+
+#### main.cpp
+```cpp
+#include "Fraction.h"
+#include <iostream>
+using namespace std;
+
+int main(int args, char** argv)
+{
+    Fraction f1(1, 2);        // 1/2
+    Fraction f2(3, 4);        // 3/4
+    Fraction result;
+
+    result = f1.Add(f2);      // 1/2 + 3/4 = 10/8
+    cout << "1/2 + 3/4 = ";
+    result.Write(cout);
+    cout << endl;
+
+    result = f2.Subtract(f1); // 3/4 - 1/2 = 2/8
+    cout << "3/4 - 1/2 = ";
+    result.Write(cout);
+    cout << endl;
+
+    result = f2.Multiply(3);  // 3/4 * 3 = 9/4
+    cout << "3/4 * 3 = ";
+    result.Write(cout);
+    cout << endl;
+
+    Fraction f3;
+    f3.Read(cin);             // input format is up to you, e.g. "1 2" to represent 1/2
+    cout << "Read = ";
+    f3.Write(cout);
+    cout << endl;
+
+    system("pause");
+}
+```
+```
+1/2 + 3/4 = 10/8
+3/4 - 1/2 = 2/8
+3/4 * 3 = 9/4
+3/4 / 3 = 3/12
+4 5
+Read = 4/5
+Press any key to continue . . .
+```
+
+I have added functionality to my fraction program to add and subtract two fractions together, divide or multiply a fraction by a constant int, and read and write fractions. In this state it does not allow for the optional multiplication or division of two fractions, however, I will move onto adding that functionality when I start to override operators in the next bit.
+
 ---
 
 ## Q3. - Operators in Fraction
