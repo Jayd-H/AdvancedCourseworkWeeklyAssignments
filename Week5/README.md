@@ -303,7 +303,7 @@ I have added functionality to my fraction program to add and subtract two fracti
 ---
 
 ## Q3. - Operators in Fraction
-
+### Question
 Add the following functionality to your `Fraction` class:
 
 - The ability to add two Fractions together using the **class member operator** `operator+`
@@ -332,6 +332,287 @@ Add the following code to main to test your `Fraction` class:
 ```
 
 **[LAB BOOK - Copy your code for your operators into your lab book.  Reflect on the difference between class operators and auxiliary operators]**
+
+### Answer
+
+#### fraction.cpp
+
+```cpp
+#include "fraction.h"
+#include <iostream>
+#include <cassert>
+
+// Default constructor
+Fraction::Fraction() : m_num(0), m_den(1) {}
+
+// Constructor with parameters (and also a conversion constructor for int to Fraction)
+Fraction::Fraction(int num, int den) : m_num(num), m_den(den) {
+    assert(den != 0);
+}
+
+// Overloaded operators for Fraction + Fraction, Fraction - Fraction, etc.
+Fraction Fraction::operator+(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_den + m_den * rhs.m_num, m_den * rhs.m_den);
+}
+
+Fraction Fraction::operator-(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_den - m_den * rhs.m_num, m_den * rhs.m_den);
+}
+
+Fraction Fraction::operator*(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_num, m_den * rhs.m_den);
+}
+
+Fraction Fraction::operator/(const Fraction& rhs) const {
+    assert(rhs.m_num != 0); // Prevent division by zero
+    return Fraction(m_num * rhs.m_den, m_den * rhs.m_num);
+}
+
+// Overloaded operators for Fraction + int, Fraction - int, etc.
+Fraction Fraction::operator+(int rhs) const {
+    return *this + Fraction(rhs);
+}
+
+Fraction Fraction::operator-(int rhs) const {
+    return *this - Fraction(rhs);
+}
+
+Fraction Fraction::operator*(int rhs) const {
+    return *this * Fraction(rhs);
+}
+
+Fraction Fraction::operator/(int rhs) const {
+    return *this / Fraction(rhs);
+}
+
+// Friend functions for int + Fraction, int - Fraction, etc.
+Fraction operator+(int lhs, const Fraction& rhs) {
+    return Fraction(lhs) + rhs;
+}
+
+Fraction operator-(int lhs, const Fraction& rhs) {
+    Fraction lhsAsFraction(lhs);
+    return lhsAsFraction - rhs;
+}
+
+Fraction operator*(int lhs, const Fraction& rhs) {
+    return Fraction(lhs) * rhs;
+}
+
+Fraction operator/(int lhs, const Fraction& rhs) {
+    assert(rhs.Num() != 0);
+    return Fraction(lhs) / rhs;
+}
+
+// Accessors
+int Fraction::Num() const { return m_num; }
+int Fraction::Den() const { return m_den; }
+
+// Mutators
+void Fraction::Num(int num) { m_num = num; }
+void Fraction::Den(int den) {
+    assert(den != 0);
+    m_den = den;
+}
+
+// Stream insertion and extraction overloads
+std::ostream& operator<<(std::ostream& out, const Fraction& f) {
+    out << f.Num() << '/' << f.Den();
+    return out;
+}
+
+std::istream& operator>>(std::istream& in, Fraction& f) {
+    int num, den;
+    in >> num;
+
+    if (in.peek() == '/') {
+        in.get();
+        in >> den;
+    }
+
+    else {
+        den = 1;
+    }
+    f.Num(num);
+    f.Den(den);
+    return in;
+}
+```
+
+#### fraction.h
+
+```cpp
+#pragma once
+#include <iostream>
+#include <cassert>
+
+class Fraction {
+public:
+    // Default constructor
+    Fraction();
+
+    // Constructor with parameters
+    // Also acts as a conversion constructor for int to Fraction
+    Fraction(int num, int den = 1); // Default denominator is 1 for whole numbers
+
+    // Overloaded operators
+    // Arithmetic operations with Fraction on both sides
+    Fraction operator+(const Fraction& rhs) const;
+    Fraction operator-(const Fraction& rhs) const;
+    Fraction operator*(const Fraction& rhs) const;
+    Fraction operator/(const Fraction& rhs) const;
+
+    // Arithmetic operations with int on the right-hand side
+    Fraction operator+(int rhs) const;
+    Fraction operator-(int rhs) const;
+    Fraction operator*(int rhs) const;
+    Fraction operator/(int rhs) const;
+
+    // Arithmetic operations with int on the left-hand side
+    friend Fraction operator+(int lhs, const Fraction& rhs);
+    friend Fraction operator-(int lhs, const Fraction& rhs);
+    friend Fraction operator*(int lhs, const Fraction& rhs);
+    friend Fraction operator/(int lhs, const Fraction& rhs);
+
+    // Accessors and mutators
+    int Num() const;
+    int Den() const;
+    void Num(int num);
+    void Den(int den);
+
+    // Friend functions for stream insertion and extraction
+    friend std::ostream& operator<<(std::ostream& out, const Fraction& f);
+    friend std::istream& operator>>(std::istream& in, Fraction& f);
+
+private:
+    int m_num; // Numerator
+    int m_den; // Denominator, should not be zero
+};
+
+```
+
+#### main.cpp
+
+```cpp
+
+#include "fraction.h"
+#include <iostream>
+using namespace std;
+
+void FractionTest() {
+    Fraction f1(1, 2);
+    Fraction f2(3, 4);
+    Fraction result = f1 + f2;     // 1/2 + 3/4 = 10/8
+    cout << "1/2 + 3/4 = " << result << endl;
+
+    result = f2 - f1;     // 3/4 - 1/2 = 2/8
+    cout << "3/4 - 1/2 = " << result << endl;
+
+    result = f1 * f2;     // 1/2 * 3/4 = 3/8 
+
+    result = f2 * 3;      // 3/4 * 3 = 9/4
+    cout << "3/4 * 3 = " << result << endl;
+
+    result = 3 * f2;      // 3/4 * 3 = 9/4
+    cout << "3 * 3/4 = " << result << endl;
+
+    result = f2 / f1;     // 3/4 / 1/2 = 3/2
+
+    result = f2 / 3;      // 3/4 / 3 = 3/12
+    cout << "3/4 / 3 = " << result << endl;
+
+    result = 3 / f2;      // 4 / 3.4 = 12/3
+    cout << "3 / 3/4 = " << result << endl;
+
+    Fraction f4;
+    cin >> f4;            // input format is up to you, e.g. "1 2" to represent 1/2
+    cout << "Read = " << f4 << endl;
+
+    system("pause");
+}
+
+void FractionCalculator() {
+    cout << "This is a fraction calculator (integers also work)" << endl;
+    cout << "Enter a fraction followed by an operator, followed by another fraction" << endl;
+    cout << "Example: 'a/b + c/d'" << endl;
+    cout << "Operators: +, -, *, /" << endl;
+    while (true) {
+        Fraction f1, f2;
+        char op;
+
+        cin >> f1;
+        if (cin.fail()) {
+            cout << "Invalid input. Please enter fractions in the format a/b." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        cin >> op;
+        if (cin.fail() || (op != '+' && op != '-' && op != '*' && op != '/')) {
+            cout << "Invalid operator. Please use one of the following: +, -, *, /" << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        cin >> f2;
+        if (cin.fail()) {
+            cout << "Invalid input. Please enter fractions in the format a/b." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        switch (op) {
+        case '+':
+            cout << "Result: "<< f1 << " + " << f2 << " = " << f1 + f2 << endl;
+            break;
+        case '-':
+            cout << "Result: " << f1 << " - " << f2 << " = " << f1 - f2 << endl;
+            break;
+        case '*':
+            cout << "Result: " << f1 << " * " << f2 << " = " << f1 * f2 << endl;
+            break;
+        case '/':
+            cout << "Result: " << f1 << " / " << f2 << " = " << f1 / f2 << endl;
+            break;
+        default:
+            cout << "Invalid operator" << endl;
+            break;
+        }
+    }
+}
+
+int main(int args, char** argv)
+{
+    FractionTest();
+    //FractionCalculator();
+    return 0;
+}
+
+```
+#### output
+
+```
+1/2 + 3/4 = 10/8
+3/4 - 1/2 = 2/8
+3/4 * 3 = 9/4
+3 * 3/4 = 9/4
+3/4 / 3 = 3/12
+3 / 3/4 = 12/3
+1/2
+Read = 1/2
+Press any key to continue . . .
+```
+
+I completed question 3 including all the optional stuff. The most difficult part of all of this was not only getting familiar with the differences between member operators and auxillary operators, but also understanding how to handle operations regardless of order (5 * 4 vs 4 * 5). The struggle was not necessarily making this work with fraction on fraction operations, as the function already takes fractions, but rather making this work on integer fraction operations. I ended up making a set of functions for all four operators if the integer is on the right hand side, then making a friend set of the four operators if the int is on the left hand side. These friend functions then reference the main overloaded operator methods so that all of the main logic is centralized to those. I do not necessarily know if this is the best way to do things as it took me a while to get used to all of this but I am proud I was able to implement it.
+
+For streaming input from the user into the program, I wanted the ability for integers to be taken as fractions. To do this, I first checked if the users input for a fraction contained a '/', and if so ignored it, but if it did not, it would add the denominator of 1. Looking back, there is probably a way I could have incorporated this logic into my other functions. Instead of taking ```result = f1 + 3``` as a fraction adding an integer, it might have been better to have a way to convert that integer to '3/1' to prevent me from having so many related methods. However, I am not certain this would have been better or more efficient.
+
+I also thought about making the friend functions inline and implementing them into my header, as to reduce overhead. However, going forward I will need to do some more reading up on how inline works to be okay with using it.
+
+After my program was complete, I was compelled to make a simple fraction calculator, as all of the hard bit was already done and I wanted to have some form of more tangible effect to what I have created.
 
 ---
 
