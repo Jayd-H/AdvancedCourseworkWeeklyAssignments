@@ -10,9 +10,16 @@ public:
 
 	// arithmetic operations
 	Fraction Add(const Fraction& rhs) const;
+	Fraction operator+(const Fraction& rhs) const { return Add(rhs); }
+
 	Fraction Subtract(const Fraction& rhs) const;
+	Fraction operator-(const Fraction& rhs) const { return Subtract(rhs); }
+
 	Fraction Multiply(int scale) const;
+	Fraction operator*(int scale) const { return Multiply(scale); }
+
 	Fraction Divide(int scale) const;
+	Fraction operator/(int scale) const { return Divide(scale); }
 
 	// getters and setters
 	int Num() const;
@@ -29,3 +36,10 @@ public:
 		int m_num;
 		int m_den;
 };
+
+std::ostream& operator<<(std::ostream& out, const Fraction& f);
+std::istream& operator>>(std::istream& in, Fraction& f);
+Fraction operator*(int scale, const Fraction& f);
+Fraction operator/(int scale, const Fraction& f);
+Fraction operator+(int scale, const Fraction& f);
+Fraction operator-(int scale, const Fraction& f);

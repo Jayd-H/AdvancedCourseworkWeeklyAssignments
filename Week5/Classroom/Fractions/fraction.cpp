@@ -30,6 +30,22 @@ Fraction Fraction::Divide(int scale) const {
 	return Fraction(Num(), Den() * scale);
 }
 
+Fraction operator*(int scale, const Fraction& f) {
+	return f.Multiply(scale);
+}
+
+Fraction operator/(int scale, const Fraction& f) {
+	return f.Divide(scale);
+}
+
+Fraction operator+(int scale, const Fraction& f) {
+	return f.Add(Fraction(scale, 1));
+}
+
+Fraction operator-(int scale, const Fraction& f) {
+	return f.Subtract(Fraction(scale, 1));
+}
+
 // getters and setters
 
 int Fraction::Num() const {
@@ -59,4 +75,14 @@ void Fraction::Read(std::istream& in) {
 	int num, den;
 	in >> num >> den;
 	Num(num); Den(den);
+}
+
+std::ostream& operator<<(std::ostream& out, const Fraction& f) {
+	f.Write(out);
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, Fraction& f) {
+	f.Read(in);
+	return in;
 }
