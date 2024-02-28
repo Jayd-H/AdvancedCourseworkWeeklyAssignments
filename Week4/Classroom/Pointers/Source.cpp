@@ -61,9 +61,7 @@ void functionE() {
 	void* p3 = &p2; 
 	void* p4 = &p3;  
 
-
 	p1 = &p4;
-
 }
 
 int main(int, char**) {
