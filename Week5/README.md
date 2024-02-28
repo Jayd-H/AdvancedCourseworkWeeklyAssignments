@@ -705,6 +705,91 @@ Repeat the previous section but this time rewrite the `myswap` function to pass 
 
 **[LAB BOOK - Copy your code for pass-by-value and pass-by-ref into your lab book.  Reflect on the difference between them]**
 
+### Answer
+
+I ran the initial program, noted that it did not work because it was passing values, not references, so I changed the myswap function accordingly.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+void myswap(int& lhs, int& rhs) {
+	int temp = lhs;
+	lhs = rhs;
+	rhs = temp;
+}
+
+int clamp(int value, int low, int high) {
+	if (value < low)
+		return low;
+	if (value > high)
+		return high;
+	return value;
+}
+
+int main(int, char**) {
+
+	int a = 10;
+	int b = 20;
+	
+	cout << "a=" << a << ", b=" << b << endl;
+
+	myswap(a, b);
+
+	cout << "a=" << a << ", b=" << b << endl;
+	
+	return 0;
+}
+```
+
+```
+a=10, b=20
+a=20, b=10
+```
+
+Now that these are references, the function will swap the actual values of the arguments provided to it.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+void myswap(int* lhs, int* rhs) {
+	int temp = *lhs;
+	*lhs = *rhs;
+	*rhs = temp;
+}
+
+
+int clamp(int value, int low, int high) {
+	if (value < low)
+		return low;
+	if (value > high)
+		return high;
+	return value;
+}
+
+int main(int, char**) {
+
+	int a = 10;
+	int b = 20;
+	
+	cout << "a=" << a << ", b=" << b << endl;
+
+	myswap(&a, &b);
+
+	cout << "a=" << a << ", b=" << b << endl;
+	
+	return 0;
+}
+```
+
+```
+a=10, b=20
+a=20, b=10
+```
+
+I rewrote the program again to pass by address. When you do this, you are giving the function the memory addresses of the variables, rather than copies of their values, meaning that myswap directly manipulated the values at the addresses provided, of course then resulting in the original variables being swapped. On the call stack, only the addresses are pushed instead of the full variable data, making the stack use minimal memory. In this case, because it is an int, there is no difference
+
 ## Q5. Return by value
 
 Replace the `myswap` function with the `clamp` function
