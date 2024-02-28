@@ -83,8 +83,9 @@ int main(int argn, char* argv[])
 ```
 
 I created functions that allow the user to input and output a grid. Doing them this way is better as it more natively works with the streaming operators, leading to easier to work with and understand code. Instead of outputting a grid to console using ```LoadGrid()```, you can output it with ```std::cout << grid << std::endl;```.
-## Q2. Fractions
 
+## Q2. Fractions
+### Question
 Open the **Fractions** project
 
 Implement the Fraction class that you have seen in lectures.  Use the header file example that was presented in lectures to define your class, methods, member variables etc.
@@ -105,7 +106,7 @@ Methods will include:
 - Write
 - Read
 
-![alt text](README-fraction.png "Fraction Equation")
+![alt text](Classroom/README-fraction.png "Fraction Equation")
 
 **Equation 1 - Adding two fractions**
 
@@ -148,6 +149,8 @@ int main(int args, char** argv)
 ```
 
 **[LAB BOOK - Copy your code for your Fraction methods into your lab book]**
+
+### Answer
 
 ---
 
