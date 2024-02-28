@@ -857,4 +857,70 @@ Can you explain what is happening?
 
 ### Answer
 
+```cpp
+#include <iostream>
+using namespace std;
+
+void myswap(int* lhs, int* rhs) {
+	int temp = *lhs;
+	*lhs = *rhs;
+	*rhs = temp;
+}
+
+
+int clamp(int value, int low, int high) {
+	if (value < low)
+		return low;
+	if (value > high)
+		return high;
+	return value;
+}
+
+int main(int, char**) {
+
+	int a = 10;
+	int b = 20;
+	
+	cout << "a=" << a << ", b=" << b << endl;
+
+	clamp(a, 15, 25);
+
+	cout << "a=" << a << ", b=" << b << endl;
+	
+	return 0;
+}
+```
+
+I added a call to the clamp function in main. When called, the arguments are passed by value, meaning they are copied into the stack frame of the clamp function.
+
+```cpp
+int& clamp(int& value, int low, int high) {
+	if (value < low)
+		return low;
+	if (value > high)
+		return high;
+	return value;
+}
+
+int main(int, char**) {
+
+	int value1 = 10;
+	int value2 = 20;
+	int result1 = clamp(value1, 0, 30) + clamp(value2, 0, 30);
+	
+	return 0;
+}
+```
+
+```result1: 30```
+
+I altered the clamp function to pass by reference and changed the way it is called from main. In this situation, it correctly displayed 30, as value1 gets clamped to 0, and value2 gets clamped to 30, therefore 0 + 30 = 30.
+
+```
+int result2 = clamp(value1, 0, 5) + clamp(value2, 0, 10);
+result2: 20
+```
+
+In this example, the final result is 20. This seems unexpected, however, because the clamp function does not actually clamp the two values and instead returns references to the temporary values 'low' and 'high'. This leads to undefined behaviour where the last evaluated expression's result is used for both additions, ending up with essentially 10 + 10 = 20.
+
 ## Reflection
