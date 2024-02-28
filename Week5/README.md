@@ -617,6 +617,7 @@ After my program was complete, I was compelled to make a simple fraction calcula
 ---
 
 ## Q4. Parameters
+### Question
 
 Open and build the **Parameters** project
 
@@ -768,3 +769,7 @@ Does `result2` hold the correct value?
 Can you explain what is happening?
 
 **[LAB BOOK - Copy your code for return-by-value and return-by-ref into your lab book.  Reflect on the difference between them]**
+
+### Answer
+
+## Reflection
