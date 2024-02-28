@@ -5,8 +5,9 @@ using namespace std;
 int main(int argn, char* argv[])
 {
 	Grid grid;
-	grid.LoadGrid("Grid1.txt");
-	grid.SaveGrid("OutGrid.txt");
+	std::cin >> grid;
+	std::cout << endl;
+	std::cout << grid << std::endl;
 
 	system("pause");
 }

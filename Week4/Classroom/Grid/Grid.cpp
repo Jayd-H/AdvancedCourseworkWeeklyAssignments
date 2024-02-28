@@ -47,3 +47,26 @@ void Grid::SaveGrid(const char filename[])
     }
     fileStream.close();
 }
+
+std::ostream& operator << (std::ostream& os, const Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            os << grid.m_grid[y][x] << " ";
+        }
+        os << std::endl;
+    }
+    return os;
+}
+
+std::istream& operator >> (std::istream& is, Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            is >> grid.m_grid[y][x];
+        }
+    }
+    return is;
+}
