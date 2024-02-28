@@ -1,11 +1,12 @@
 #include <iostream>
 using namespace std;
 
-void myswap(int& lhs, int& rhs) {
-	int temp = lhs;
-	lhs = rhs;
-	rhs = temp;
+void myswap(int* lhs, int* rhs) {
+	int temp = *lhs;
+	*lhs = *rhs;
+	*rhs = temp;
 }
+
 
 int clamp(int value, int low, int high) {
 	if (value < low)
@@ -22,7 +23,7 @@ int main(int, char**) {
 	
 	cout << "a=" << a << ", b=" << b << endl;
 
-	myswap(a, b);
+	myswap(&a, &b);
 
 	cout << "a=" << a << ", b=" << b << endl;
 	
