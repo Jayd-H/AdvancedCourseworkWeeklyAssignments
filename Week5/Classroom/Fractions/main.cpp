@@ -90,7 +90,7 @@ void FractionCalculator() {
 
 int main(int args, char** argv)
 {
-    //FractionTest();
-    FractionCalculator();
+    FractionTest();
+    //FractionCalculator();
     return 0;
 }
