@@ -1,88 +1,99 @@
-#include <iostream>
-#include <assert.h>
 #include "fraction.h"
+#include <iostream>
+#include <cassert>
 
-// default constructor
-Fraction::Fraction() {
-	Num(0); Den(1);
+// Default constructor
+Fraction::Fraction() : m_num(0), m_den(1) {}
+
+// Constructor with parameters (and also a conversion constructor for int to Fraction)
+Fraction::Fraction(int num, int den) : m_num(num), m_den(den) {
+    assert(den != 0);
 }
 
-// specific constructor
-Fraction::Fraction(int num, int den) {
-	Num(num); Den(den);
+// Overloaded operators for Fraction + Fraction, Fraction - Fraction, etc.
+Fraction Fraction::operator+(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_den + m_den * rhs.m_num, m_den * rhs.m_den);
 }
 
-// arithmetic operations
-Fraction Fraction::Add(const Fraction& rhs) const {
-	return Fraction(Num() * rhs.Den() + Den() * rhs.Num(), Den() * rhs.Den());
+Fraction Fraction::operator-(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_den - m_den * rhs.m_num, m_den * rhs.m_den);
 }
 
-Fraction Fraction::Subtract(const Fraction& rhs) const {
-	return Fraction(Num() * rhs.Den() - Den() * rhs.Num(), Den() * rhs.Den());
+Fraction Fraction::operator*(const Fraction& rhs) const {
+    return Fraction(m_num * rhs.m_num, m_den * rhs.m_den);
 }
 
-Fraction Fraction::Multiply(int scale) const {
-	return Fraction(Num() * scale, Den());
+Fraction Fraction::operator/(const Fraction& rhs) const {
+    assert(rhs.m_num != 0); // Prevent division by zero
+    return Fraction(m_num * rhs.m_den, m_den * rhs.m_num);
 }
 
-Fraction Fraction::Divide(int scale) const {
-	assert(scale != 0);
-	return Fraction(Num(), Den() * scale);
+// Overloaded operators for Fraction + int, Fraction - int, etc.
+Fraction Fraction::operator+(int rhs) const {
+    return *this + Fraction(rhs);
 }
 
-Fraction operator*(int scale, const Fraction& f) {
-	return f.Multiply(scale);
+Fraction Fraction::operator-(int rhs) const {
+    return *this - Fraction(rhs);
 }
 
-Fraction operator/(int scale, const Fraction& f) {
-	return f.Divide(scale);
+Fraction Fraction::operator*(int rhs) const {
+    return *this * Fraction(rhs);
 }
 
-Fraction operator+(int scale, const Fraction& f) {
-	return f.Add(Fraction(scale, 1));
+Fraction Fraction::operator/(int rhs) const {
+    return *this / Fraction(rhs);
 }
 
-Fraction operator-(int scale, const Fraction& f) {
-	return f.Subtract(Fraction(scale, 1));
+// Friend functions for int + Fraction, int - Fraction, etc.
+Fraction operator+(int lhs, const Fraction& rhs) {
+    return Fraction(lhs) + rhs;
 }
 
-// getters and setters
-
-int Fraction::Num() const {
-	return m_num;
+Fraction operator-(int lhs, const Fraction& rhs) {
+    Fraction lhsAsFraction(lhs);
+    return lhsAsFraction - rhs;
 }
 
-int Fraction::Den() const {
-	return m_den;
+Fraction operator*(int lhs, const Fraction& rhs) {
+    return Fraction(lhs) * rhs;
 }
 
-void Fraction::Num(int num) {
-	m_num = num;
+Fraction operator/(int lhs, const Fraction& rhs) {
+    assert(rhs.Num() != 0);
+    return Fraction(lhs) / rhs;
 }
 
+// Accessors
+int Fraction::Num() const { return m_num; }
+int Fraction::Den() const { return m_den; }
+
+// Mutators
+void Fraction::Num(int num) { m_num = num; }
 void Fraction::Den(int den) {
-	assert(den);
-	m_den = den;
+    assert(den != 0);
+    m_den = den;
 }
 
-// input and output
-
-void Fraction::Write(std::ostream& out) const {
-	out << Num() << "/" << Den();
-}
-
-void Fraction::Read(std::istream& in) {
-	int num, den;
-	in >> num >> den;
-	Num(num); Den(den);
-}
-
+// Stream insertion and extraction overloads
 std::ostream& operator<<(std::ostream& out, const Fraction& f) {
-	f.Write(out);
-	return out;
+    out << f.Num() << '/' << f.Den();
+    return out;
 }
 
 std::istream& operator>>(std::istream& in, Fraction& f) {
-	f.Read(in);
-	return in;
+    int num, den;
+    in >> num;
+
+    if (in.peek() == '/') {
+        in.get();
+        in >> den;
+    }
+
+    else {
+        den = 1;
+    }
+    f.Num(num);
+    f.Den(den);
+    return in;
 }
