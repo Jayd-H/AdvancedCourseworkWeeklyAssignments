@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-void myswap(int lhs, int rhs) {
+void myswap(int& lhs, int& rhs) {
 	int temp = lhs;
 	lhs = rhs;
 	rhs = temp;
