@@ -23,7 +23,7 @@ int main(int, char**) {
 	
 	cout << "a=" << a << ", b=" << b << endl;
 
-	myswap(&a, &b);
+	clamp(a, 15, 25);
 
 	cout << "a=" << a << ", b=" << b << endl;
 	
