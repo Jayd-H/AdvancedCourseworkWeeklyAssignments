@@ -97,6 +97,7 @@ The header file will outline what the class does, with the implementation file p
 The header file needs to begin with declaring the class, the constructor and destructor, the public methods and the private data members.
 
 The implementation file needs to include the class header, the constructor and destructor definition, and the method definition.
+
 ---
 
 ## Q2. Reading into Grid Class
