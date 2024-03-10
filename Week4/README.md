@@ -97,6 +97,7 @@ The header file will outline what the class does, with the implementation file p
 The header file needs to begin with declaring the class, the constructor and destructor, the public methods and the private data members.
 
 The implementation file needs to include the class header, the constructor and destructor definition, and the method definition.
+
 ---
 
 ## Q2. Reading into Grid Class
@@ -173,6 +174,7 @@ void Grid::LoadGrid(const char filename[])
 
 ```
 The LoadGrid function is defined, it opens a file with the filename passed into it, then validates if it is able to open that file. If it can, it starts two for loops from 0-8 inclusive, representing the x and y axis for this 9x9 array. after every pass through, it stores the value at the coordinates x and y into the grid m_grid. After it has finished, it closes the file stream. 
+
 ---
 
 ## Q3. Saving the Grid
