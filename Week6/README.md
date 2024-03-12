@@ -571,7 +571,7 @@ bool whileBinarySearch(int* list, int size, int value) {
 		int mid = (start + end) / 2;
 		if (list[mid] == value) {
 			std::cout << "Found\n";
-			std::cout << "Index: " << mid << std::endl;
+			std::cout << "Index: " << mid << "\n";
 			std::cout << "Tries: " << tries << std::endl;
 			return true;
 		}
@@ -588,6 +588,12 @@ bool whileBinarySearch(int* list, int size, int value) {
 }
 ```
 
-My main point of adding small additional features like tries and index were not only because it is fun, but to also show scalability. The recursive algorithm needs a separate wrapper function just to work as intended and to implement small additional features. For me, the iterative function is much more accessible and easier to read/debug. Not only that but to my knowledge, while both implementations have a time complexity of O(logn), the space complexity wildly differs from the two, with the recursive version being O(logn), and the iterative version being O(1). This is because as the list gets bigger, the call stack for the recursive implementation grows exponentially, potentially leading to a stack overflow if it becomes too deep.
+My main point of adding small additional features like tries and index were not only because it is fun, but to also show scalability. The recursive algorithm needs a separate wrapper function just to work as intended and to implement small additional features. For me, the iterative function is much more accessible and easier to read/debug. Not only that but to my knowledge, while both implementations have a time complexity of O(logn), the space complexity wildly differs from the two, with the recursive version being O(logn), and the iterative version being O(1). This is because as the list to search gets bigger, the call stack for the recursive implementation grows exponentially, potentially leading to a stack overflow if it becomes too deep.
 
 Although it was fun to implement a binary search in a recursive way, I do not see myself doing it again. However, I am still largely naive to the world of C++ and system programming, so there might be an obscure use case for it.
+
+## Reflection
+
+Throughout this lab I have furthered my knowledge of templates, and the different ways to implement binary search in C++. I am admittedly a little upset that I could not figure out the error in question 2, but like I said previously, I reckon with a little more knowledge on the topic it would be obvious. I really like the notion of templates and I can't wait to use them at scale in bigger projects. Even though I have implemented binary searches in other languages before, it is nice to see how that translates to C++. At this current stage, even though I am still reliant on a search bar for more complex questions, I feel like I am making steady progress.
+
+The more time I spend with C++, the more I enjoy it and the more intuitive it is to write and read. Like I say every time in these labs, I know I have a long way to go with this language and even programming in general, but the way these labs are structured I find it much easier to digest these topics. 
