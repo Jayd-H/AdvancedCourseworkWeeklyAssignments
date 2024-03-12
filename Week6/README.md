@@ -41,6 +41,235 @@ Run your code any you should have the same result as when you completed this tas
 
 ### Answer
 
+I first started by copying my code from a few weeks ago into this new solution. I altered my grid class to be a template and added the new 'main' logic.
+
+#### main.cpp
+```cpp
+#include <iostream>
+#include "Grid.h"
+using namespace std;
+
+int main (int, char**) {
+	Grid<int> grid;
+	grid.LoadGrid("Grid1.txt");
+	grid.SaveGrid("OutGrid.txt");
+
+	return 0;
+}
+```
+
+#### grid.h
+```cpp
+#pragma once
+#include <iostream>
+
+template<class T>
+class Grid
+{
+public:
+	Grid();
+	~Grid();
+
+	void LoadGrid(const char filename[]);
+	void SaveGrid(const char filename[]);
+	friend std::ostream& operator << (std::ostream& os, const Grid& grid);
+	friend std::istream& operator >> (std::istream& is, Grid& grid);
+
+private:
+	T m_grid[9][9];
+
+};
+```
+#### grid.cpp
+```cpp
+#include "Grid.h"
+#include <fstream> 
+#include <iostream> 
+
+Grid::Grid() {}
+Grid::~Grid() {}
+
+
+void Grid::LoadGrid(const char filename[])
+{
+    std::ifstream fileStream(filename);
+
+    if (!fileStream)
+    {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            fileStream >> m_grid[y][x];
+        }
+    }
+
+    fileStream.close();
+}
+
+void Grid::SaveGrid(const char filename[])
+{
+    std::ofstream fileStream(filename);
+
+    if (!fileStream)
+    {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            fileStream << m_grid[y][x] << " ";
+        }
+        fileStream << std::endl;
+    }
+    fileStream.close();
+}
+
+std::ostream& operator << (std::ostream& os, const Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            os << grid.m_grid[y][x] << " ";
+        }
+        os << std::endl;
+    }
+    return os;
+}
+
+std::istream& operator >> (std::istream& is, Grid& grid) {
+    for (int y = 0; y < 9; ++y)
+    {
+        for (int x = 0; x < 9; ++x)
+        {
+            is >> grid.m_grid[y][x];
+        }
+    }
+    return is;
+}
+```
+
+I then moved all of my code from my grid.cpp into my grid.h, leaving me now with two files, main.cpp, and grid.h. Here are them now
+
+#### main.cpp
+```cpp
+#include <iostream>
+#include "Grid.h"
+using namespace std;
+
+int main (int, char**) {
+	Grid<int> grid;
+	grid.LoadGrid("Grid1.txt");
+	std::cout << grid;
+	grid.SaveGrid("OutGrid.txt");
+
+	return 0;
+}
+```
+
+#### grid.h
+```cpp
+#pragma once
+#include <iostream>
+#include <fstream>
+
+template<class T>
+class Grid
+{
+public:
+    Grid() = default;
+    ~Grid() = default;
+
+    void LoadGrid(const char* filename); 
+    void SaveGrid(const char* filename);
+
+    friend std::ostream& operator<<(std::ostream& os, const Grid<T>& grid) {
+        for (int y = 0; y < 9; ++y) {
+            for (int x = 0; x < 9; ++x) {
+                os << grid.m_grid[y][x] << " ";
+            }
+            os << std::endl;
+        }
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, Grid<T>& grid) {
+        for (int y = 0; y < 9; ++y) {
+            for (int x = 0; x < 9; ++x) {
+                is >> grid.m_grid[y][x];
+            }
+        }
+        return is;
+    }
+
+private:
+    T m_grid[9][9];
+};
+
+template<class T>
+void Grid<T>::LoadGrid(const char* filename) 
+{
+    std::ifstream fileStream(filename);
+    if (!fileStream) {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y) {
+        for (int x = 0; x < 9; ++x) {
+            fileStream >> m_grid[y][x];
+        }
+    }
+    fileStream.close();
+}
+
+template<class T>
+void Grid<T>::SaveGrid(const char* filename)
+{
+    std::ofstream fileStream(filename);
+    if (!fileStream) {
+        std::cout << "Could not open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (int y = 0; y < 9; ++y) {
+        for (int x = 0; x < 9; ++x) {
+            fileStream << m_grid[y][x] << " ";
+        }
+        fileStream << std::endl;
+    }
+    fileStream.close();
+}
+```
+
+#### Output
+
+```
+1 2 3 4 5 6 7 8 9
+2 3 4 5 6 7 8 9 1
+3 4 5 6 7 8 9 1 2
+4 5 6 7 8 9 1 2 3
+5 6 7 8 9 1 2 3 4
+6 7 8 9 1 2 3 4 5
+7 8 9 1 2 3 4 5 6
+8 9 1 2 3 4 5 6 7
+9 1 2 3 4 5 6 7 8
+
+D:\Files\Documents\#UNIY2\AP\AdvancedCourseworkWeeklyAssignments\Week6\Classroom\Debug\Grid.exe (process 31428) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .
+```
+
+I also verified that the contents of grid1.txt was being correctly copied over to outgrid1.txt. As you can see, I have had to move the overloaded streaming operators inside of the class definition. This is because when I copied them over and treat them like the other functions, I was getting a linker error 'LNK2019'. I looked this up and to my understanding this error means that the linker could not find a definition for something that is declared but not defined. I found an easy fix online that involves moving them into the class definition to ensure that they are instantiated and therefore can be found. I do not know if this is considered bad practice or not, or if there is a better way to do this however. 
+
+
 ---
 
 ## Q2. Template Grid (floats)
