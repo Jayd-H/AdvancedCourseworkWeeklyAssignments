@@ -39,6 +39,7 @@ template<class T>
 void Grid<T>::LoadGrid(const char* filename) 
 {
     std::ifstream fileStream(filename);
+
     if (!fileStream) {
         std::cout << "Could not open the file: " << filename << std::endl;
         return;
@@ -49,7 +50,6 @@ void Grid<T>::LoadGrid(const char* filename)
             fileStream >> m_grid[y][x];
         }
     }
-    fileStream.close();
 }
 
 template<class T>
@@ -67,5 +67,4 @@ void Grid<T>::SaveGrid(const char* filename)
         }
         fileStream << std::endl;
     }
-    fileStream.close();
 }
