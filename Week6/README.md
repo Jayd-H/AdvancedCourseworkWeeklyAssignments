@@ -393,3 +393,201 @@ Now create a second implementation, replacing the recursive function with a sing
 Which implementation do you prefer, in terms of both readability and design intent?
 
 ### Answer
+
+I started making my two binary search algorithm, however, I wanted to challenge myself a bit and give the user the index at which the value was found, and also the amount of 'tries' it took.
+
+I will document my creation of the first recursion binary search function, then move onto translating that into a while based one. After these are done I will look into trying to log the found index and maybe perhaps having the ability for the list of numbers to be usable with any number type (decimal and integer), and making the list dynamically change size depending on input if I have time and can be bothered.
+
+I started out by creating a way to input the integers from the file into an array in my main function. 
+
+```cpp
+int main(int, char**) {
+	int numlist[100];
+	std::ifstream file("binarysearchIn.txt");
+	int i = 0;
+
+	while (file >> numlist[i]) {
+		i++;
+	}
+	file.close();
+
+	int value;
+	std::cout << "Enter a value to search: ";
+	std::cin >> value;
+
+	std::cout << "Recursion Binary Search\n";
+	recursionBinarySearch(numlist, i, value);
+	return 0;
+}
+```
+
+By doing it like this, the 'size' parameter is dynamically passed into my ```recursionBinarySearch()``` function, and I can choose the value for quicker testing.
+
+```cpp
+bool recursionBinarySearch(int* list, int size, int value) {
+	static int tries = 0;
+	if (size == 0) {
+		return false;
+	}
+	int mid = size / 2; 
+	if (list[mid] == value) {
+		std::cout << "Found " << value << "\n";
+		std::cout << "Tries: " << tries << std::endl;
+		tries = 0;
+		return true;
+	}
+	else if (list[mid] > value) {
+		tries++;
+		return recursionBinarySearch(list, mid, value);
+	}
+	else {
+		tries++;
+		return recursionBinarySearch(list + mid + 1, size - mid - 1, value);
+	}
+}
+```
+
+It was mentioned in a much earlier lecture the function of the static modifier, I thought here is a perfect place to implement it. I'm still unsure on what the general consensus is on about using static like this, however, this will only last shortly as I need to make a wrapper function anyways if I want a good way to log the index of which the desired value is at.
+
+Before altering my recursion binary search I moved onto my while binary search, also altering my main function to call it.
+
+```cpp
+int main(int, char**) {
+	int numlist[100];
+	std::ifstream file("binarysearchIn.txt");
+	int i = 0;
+
+	while (file >> numlist[i]) {
+		i++;
+	}
+	file.close();
+
+	int value;
+	std::cout << "Enter a value to search: ";
+	std::cin >> value;
+
+	std::cout << "Recursion Binary Search\n";
+	recursionBinarySearch(numlist, i, value);
+
+	std::cout << "\n";
+
+	std::cout << "While Binary Search" << std::endl;
+	whileBinarySearch(numlist, i, value);
+
+	return 0;
+}
+```
+
+```cpp
+bool whileBinarySearch(int* list, int size, int value) {
+	int tries = 0;
+	int start = 0;
+	int end = size - 1;
+	while (start <= end) {
+		tries++;
+		int mid = (start + end) / 2;
+		if (list[mid] == value) {
+			std::cout << "Found\n";
+			std::cout << "Tries: " << tries << std::endl;
+			return true;
+		}
+		else if (list[mid] > value) {
+			end = mid - 1;
+		}
+		else {
+			start = mid + 1;
+		}
+	}
+	std::cout << "Not found\n";
+	std::cout << "Tries: " << tries << std::endl;
+	return false;
+}
+```
+
+As you can see this uses a different (and much nicer) way of choosing the middle element is chosen, and how it handles how the updating of subarray bounds is much more readable. Furthermore, I noticed a difference in the output of number of tries between the two implementations. This should not be the case, as for the same list and the same search value, the number of comparisons should be identical between a recursive and iterative implementation.
+
+```
+Enter a value to search: 45
+Recursion Binary Search
+Found
+Tries: 5
+
+While Binary Search
+Found
+Tries: 7
+
+D:\Files\Documents\#UNIY2\AP\AdvancedCourseworkWeeklyAssignments\Week6\Classroom\Debug\Binary Search.exe (process 2840) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .
+```
+
+There is only so much you can take this recursive binary search function without having to implement a wrapper. I added a wrapper and also a way to show index of the found value.
+
+```cpp
+bool recursionBinarySearch(int* list, int start, int end, int value, int& tries, int& index) {
+	if (start > end) {
+		return false;
+	}
+	int mid = start + (end - start) / 2;
+	tries++;
+	if (list[mid] == value) {
+		index = mid;
+		return true;
+	}
+	else if (list[mid] > value) {
+		return recursionBinarySearch(list, start, mid - 1, value, tries, index);
+	}
+	else {
+		return recursionBinarySearch(list, mid + 1, end, value, tries, index);
+	}
+}
+
+
+bool recursionBinarySearch(int* list, int size, int value) {
+	static int tries = 0;
+	tries = 0;
+	int index = -1;
+	bool found = recursionBinarySearch(list, 0, size - 1, value, tries, index);
+	std::cout << (found ? "Found\n": "Not found\n");
+	if (index != -1) {
+		std::cout << "Index: " << index << "\n";
+	
+	}
+	std::cout << "Tries: " << tries << std::endl;
+	return found;
+}
+```
+To my knowledge there is not a way to implement the ability to show index in this context without using a wrapper, as simply using mid at any point in the single function recursive binary search will only give the index of the subarray.
+
+I also added the ability to show index into the iterative binary search.
+
+```cpp
+bool whileBinarySearch(int* list, int size, int value) {
+	int tries = 0;
+	int start = 0;
+	int end = size - 1;
+	while (start <= end) {
+		tries++;
+		int mid = (start + end) / 2;
+		if (list[mid] == value) {
+			std::cout << "Found\n";
+			std::cout << "Index: " << mid << std::endl;
+			std::cout << "Tries: " << tries << std::endl;
+			return true;
+		}
+		else if (list[mid] > value) {
+			end = mid - 1;
+		}
+		else {
+			start = mid + 1;
+		}
+	}
+	std::cout << "Not found\n";
+	std::cout << "Tries: " << tries << std::endl;
+	return false;
+}
+```
+
+My main point of adding small additional features like tries and index were not only because it is fun, but to also show scalability. The recursive algorithm needs a separate wrapper function just to work as intended and to implement small additional features. For me, the iterative function is much more accessible and easier to read/debug. Not only that but to my knowledge, while both implementations have a time complexity of O(logn), the space complexity wildly differs from the two, with the recursive version being O(logn), and the iterative version being O(1). This is because as the list gets bigger, the call stack for the recursive implementation grows exponentially, potentially leading to a stack overflow if it becomes too deep.
+
+Although it was fun to implement a binary search in a recursive way, I do not see myself doing it again. However, I am still largely naive to the world of C++ and system programming, so there might be an obscure use case for it.
