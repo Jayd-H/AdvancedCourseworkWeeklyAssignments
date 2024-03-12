@@ -286,7 +286,87 @@ Change some of the values in the `Grid1.txt` to floating point values and you sh
 
 ### Answer
 
----
+I altered my main.cpp file to be like this.
+
+```cpp
+#include <iostream>
+#include "Grid.h"
+using namespace std;
+
+int main (int, char**) {
+	Grid<float> grid;
+	grid.LoadGrid("Grid1.txt");
+	std::cout << grid;
+	grid.SaveGrid("OutGrid.txt");
+
+	return 0;
+}
+```
+
+and my grid1.txt file to be like this.
+
+```
+1.5 2 3 4 5 6 7 8 9
+2 3 4 5 6 7 8 9 1
+3 4 5 6 7 8 9 1 2
+4 5 6 7.5 8 9 1 2 3
+5 6 7 8 9 1 2 3 4
+6 7 8 9 1 2 3 4 5
+7 8 9 1 2 3 4 5 6
+8 9.99 1 2 3 4 5 6 7
+9 1 2 3 4 5 6 7 8
+```
+
+However, when I ran the program I received this as output.
+
+```
+1 2 3 4 5 6 7 8 9
+2 3 4 5 6 7 8 9 1
+3 4 5 6 7 8 9 1 2
+4 5 6 7 8 9 1 2 3
+5 6 7 8 9 1 2 3 4
+6 7 8 9 1 2 3 4 5
+7 8 9 1 2 3 4 5 6
+8 9 1 2 3 4 5 6 7
+9 1 2 3 4 5 6 7 8
+
+D:\Files\Documents\#UNIY2\AP\AdvancedCourseworkWeeklyAssignments\Week6\Classroom\Debug\Grid.exe (process 28796) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .
+```
+
+I checked the contents of my outgrid.txt and saw this.
+
+```
+1 2 3 4 5 6 7 8 9 
+2 3 4 5 6 7 8 9 1 
+3 4 5 6 7 8 9 1 2 
+4 5 6 7 8 9 1 2 3 
+5 6 7 8 9 1 2 3 4 
+6 7 8 9 1 2 3 4 5 
+7 8 9 1 2 3 4 5 6 
+8 9 1 2 3 4 5 6 7 
+9 1 2 3 4 5 6 7 8 
+
+```
+
+Something has clearly gone wrong somewhere as the program is not correctly displaying or saving the appropriate numbers. I put a breakpoint on my ```LoadGrid()``` function and stepped through my program to ensure it was saving them as integers. The program was correctly saving them as float values, however, instead of saving the first number as 1.5, it was saving it as 1.0.
+![Image of debugger showing that the function is storing the input as a float](image.png)
+
+ ``` 		m_grid[y][x]	1.00000000	float ```
+
+ I was really confused. I made a small if statement to check if ifstream was failing, I got into a small rabbithole about different locales and if the decimal point in my input file was throwing the system off track, I even made this small function to specifically test if it was an issue with my ```LoadGrid()``` function as a whole or if it was ifstream acting funky.
+
+ ```cpp
+float LoadSingleNumber(const char* filename) {
+	std::ifstream fileStream(filename);
+	float number;
+	fileStream >> number;
+	return number;
+}
+```
+
+To no avail, even this function was returning a float of 1.0 rather than 1.5. I know the answer would probably be obvious to me in a few weeks, but unfortunately as of right now I am not a few weeks older. 
 
 ## Q3. Binary search
 
