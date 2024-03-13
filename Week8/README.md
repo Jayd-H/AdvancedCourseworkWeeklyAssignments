@@ -1,11 +1,11 @@
 # Advanced Programming - Lab H
-
+### Week8
 This tutorial introduces the reader to linked lists in C++.
 
 ---
 
 ## Q1. PersonNode
-
+### Question
 We are going to implement an Address Book as a Single Linked List (SLL).
 
 The `PersonNode` class will be instantiated to create nodes for our SLL that will hold the name `m_name` and age `m_age` of each person, and will also hold a pointer to the next `m_next` `PersonNode` in the SLL.
@@ -18,9 +18,107 @@ We will be required to set and return the `m_next` pointer to the `AddressBookSL
 
 #### [Lab Book - Add your code and describe what you have done]
 
+### Answer
+
+**PersonNode.cpp**
+```cpp
+#include "PersonNode.h"
+
+PersonNode::PersonNode(void) : m_name(""), m_age(0), m_next(nullptr)
+{
+}
+
+PersonNode::PersonNode(const string& name, int age) : m_name(name), m_age(age), m_next(nullptr)
+{
+}
+
+PersonNode::~PersonNode(void)
+{
+}
+```
+
+**PersonNode.h**
+
+```cpp
+#pragma once
+
+#include <string>
+using namespace std;
+
+class PersonNode
+{
+public:
+	PersonNode(void);
+	PersonNode(const string& name, int age);
+	~PersonNode(void);
+
+	void SetName(const string& name) { m_name = name; }
+	string GetName() const { return m_name; }
+
+	void SetAge(int age) { m_age = age; }
+	int GetAge() const { return m_age; }
+
+	void SetNext(PersonNode* next) { m_next = next; }
+	PersonNode* GetNext() const { return m_next; }
+
+	friend class AddressBookSLL;
+
+
+
+private:
+	string m_name;
+	int m_age;
+	PersonNode* m_next;
+};
+```
+
+**main.cpp**
+
+```cpp
+
+#include <iostream>
+using namespace std;
+#include "AddressBookSLL.h"
+
+/*
+	This program will act as a Contacts Address Book using a Single Linked Lists
+*/
+
+int main(int argc, char **argv) {
+
+	PersonNode* person = new PersonNode("Jayden", 20);
+	cout << person->GetAge() << "\n";
+	cout << person->GetName() << "\n";
+
+	person->SetAge(21);
+	person->SetName("Jayd");
+
+	cout << person->GetAge() << "\n";
+	cout << person->GetName() << endl;
+
+   delete person;
+
+	AddressBookSLL book;
+	system("PAUSE");
+}
+```
+
+```
+20
+Jayden
+21
+Jayd
+Press any key to continue . . .
+```
+
+The PersonNode header file now includes setters and getters for its data. These are very simple methods that simply return the data if it is a getter, and set the data if it is a setter. I have also added AddressBookSLL as a friend class so it can access the private data members of PersonNode. This is because when we create a new item in our list, we ourselves will not call ```PersonNode* person = new PersonNode("Jayden", 20);``` or ```person->SetAge(21);```, but we will create methods of the AddressBookSLL that will do that for us. This is because the AddressBookSLL is in charge of allocating the pointers to form a chain of PersonNodes, rather than us manually trying to create that chain with ```person->SetNext(new PersonNode("Jayden", 20));```. I will explain in the next question why not only this is impractical, but dangerous.
+
+In my main function I have added some code to create a new pointer to a new PersonNode object created on the heap named 'person' with data name of 'Jayden' and age '20'. The default constructor will give this a next pointer of 'null'. I print the name and age of person to the console before setting its data to new values and printing them again, all to show that my methods are working. Finally, we delete person as to not leave it left over and cause a memory leak.
+
 ---
 
 ## Q2. AddressBookSLL
+### Question
 
 The `AddressBookSLL` class is required to have the functionality to allow for manipulation of the `PersonNodes` that are contained within the SLL.  The `AddressBookSLL` class has a head `PersonNode` called `m_head`.  This will point to the first `PersonNode` in the list.
 
@@ -66,6 +164,139 @@ AddressBookSLL::~AddressBookSLL(void)
 ```
 
 #### [Lab Book - Add your code and describe what you have done]
+
+### Answer
+
+**AddressBookSLL.h**
+```cpp
+#pragma once
+
+#include "PersonNode.h"
+
+class AddressBookSLL
+{
+public:
+	AddressBookSLL(void);
+	~AddressBookSLL(void);
+
+	void AddPerson(const string& name, int age);
+	void DisplayAll() const;
+
+private:
+	PersonNode* m_head;
+};
+```
+**AddressBookSLL.cpp**
+```cpp
+#include "AddressBookSLL.h"
+#include <iostream>
+
+AddressBookSLL::AddressBookSLL(void) : m_head(nullptr)
+{
+}
+
+AddressBookSLL::~AddressBookSLL(void)
+{
+	PersonNode* current = m_head;
+	PersonNode* next = nullptr;
+
+	while (current != nullptr)
+	{
+		next = current->GetNext();
+		delete current;
+		current = next;
+	}
+}
+
+void AddressBookSLL::AddPerson(const string& name, int age)
+{
+	PersonNode* newPerson = new PersonNode(name, age);
+	if (m_head == nullptr)
+	{
+		m_head = newPerson;
+	}
+	else
+	{
+		PersonNode* current = m_head;
+		while (current->GetNext() != nullptr)
+		{
+			current = current->GetNext();
+		}
+		current->SetNext(newPerson);
+	}
+}
+
+void AddressBookSLL::DisplayAll() const
+{
+	PersonNode* current = m_head;
+	int index = 1;
+
+	while (current != nullptr)
+	{
+		std::cout << "Person " << index++ << "\n";
+		std::cout << "Name: " << current->GetName() << "\n";
+		std::cout << "Age: " << current->GetAge() << "\n" << std::endl;
+		current = current->GetNext();
+	}
+}
+```
+
+**main.cpp**
+```cpp
+
+#include <iostream>
+using namespace std;
+#include "AddressBookSLL.h"
+
+/*
+	This program will act as a Contacts Address Book using a Single Linked Lists
+*/
+
+int main(int argc, char **argv) {
+
+	AddressBookSLL book;
+
+	book.AddPerson("Darren", 21);
+	book.AddPerson("Dawn", 42);
+	book.AddPerson("Steven", 18);
+	book.AddPerson("Sue", 27);
+
+	book.DisplayAll();
+
+	system("PAUSE");
+}
+```
+
+**Output**
+```
+Person 1
+Name: Darren
+Age: 21
+
+Person 2
+Name: Dawn
+Age: 42
+
+Person 3
+Name: Steven
+Age: 18
+
+Person 4
+Name: Sue
+Age: 27
+
+Press any key to continue . . .
+```
+
+This AddressBookSLL class is essential for managing PersonNodes into a proper linked list. Instead of using ```PersonNode* person = new PersonNode("Jayden", 20);``` we can instead use ```book.AddPerson("Jayden", 20);``` which will dynamically sift through the list and only add it at the end, when the program sees a null pointer.
+
+This is the essence of what ```AddPerson``` does, however, I will go into more detail on my specific implementation when ```book.AddPerson("Jayden", 20);``` is called. First, it creates a new pointer to a PersonNode freshly created on the heap, with the age being '20', the name being 'Jayden', and the next pointer being null. Even though we have no specified the next pointer in ```PersonNode* newPerson = new PersonNode(name, age);```, the constructor will take care of that and assign it as null for us. Then it looks at the head of the AddressBook, if the AddressBook pointer is null, meaning that there is not a starting item in the list, it will assign the head pointer to the newly created person pointer.
+
+If the list is not empty, it will initialise a new pointer 'current' to traverse the list from the beginning of the list, iterating through it until it finds a PersonNode which has a 'next' pointer of null. Once it has found this, meaning once it has found the end of the list, it sets the 'next' pointer of the current last node to point to the new node, effectively adding a new PersonNode to the end of the list. 
+
+This took me longer than I would like to admit wrapping my head around this. 
+
+I also added a simple ```DisplayAll``` function early so I can see if this logic was working.
 
 ---
 
