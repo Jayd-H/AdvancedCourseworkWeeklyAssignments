@@ -301,7 +301,7 @@ I also added a simple ```DisplayAll``` function early so I can see if this logic
 ---
 
 ## Q3. Find, Delete, Output
-
+### Question
 Add the following functionality to the `AddressBookSLL` class:
 
 1. The ability to find a person from the SLL by using their name:
@@ -323,5 +323,215 @@ This method should return `true` if the `PersonNode` was deleted or return `fals
 3. The ability to output all of the people’s names and ages that our in the AddressBookSLL to an `ostream`.
 
 #### [Lab Book - Add your code and describe what you have done]
+
+### Answer
+
+**AddressBookSLL.h**
+```cpp
+#pragma once
+
+#include "PersonNode.h"
+
+class AddressBookSLL
+{
+public:
+	AddressBookSLL(void);
+	~AddressBookSLL(void);
+
+	void AddPerson(const string& name, int age);
+	void DisplayAll() const;
+	const PersonNode* FindPerson(const string& name) const;
+	void DisplayPerson(const string& name) const;
+	bool DeletePerson(const string& name);
+
+private:
+	PersonNode* m_head;
+};
+```
+
+**AddressBookSLL.cpp**
+```cpp
+#include "AddressBookSLL.h"
+#include <iostream>
+
+AddressBookSLL::AddressBookSLL(void) : m_head(nullptr)
+{
+}
+
+AddressBookSLL::~AddressBookSLL(void)
+{
+	PersonNode* current = m_head;
+	PersonNode* next = nullptr;
+
+	while (current != nullptr)
+	{
+		next = current->GetNext();
+		delete current;
+		current = next;
+	}
+}
+
+void AddressBookSLL::AddPerson(const string& name, int age)
+{
+	PersonNode* newPerson = new PersonNode(name, age);
+	if (m_head == nullptr)
+	{
+		m_head = newPerson;
+	}
+	else
+	{
+		PersonNode* current = m_head;
+		while (current->GetNext() != nullptr)
+		{
+			current = current->GetNext();
+		}
+		current->SetNext(newPerson);
+	}
+}
+
+void AddressBookSLL::DisplayAll() const
+{
+	PersonNode* current = m_head;
+	int index = 1;
+
+	while (current != nullptr)
+	{
+		std::cout << "Person " << index++ << "\n";
+		std::cout << "Name: " << current->GetName() << "\n";
+		std::cout << "Age: " << current->GetAge() << "\n" << std::endl;
+		current = current->GetNext();
+	}
+}
+
+const PersonNode* AddressBookSLL::FindPerson(const string& name) const
+{
+	PersonNode* current = m_head;
+
+	while (current != nullptr)
+	{
+		if (current->GetName() == name)
+		{
+			return current;
+		}
+		current = current->GetNext();
+	}
+	return nullptr;
+}
+
+void AddressBookSLL::DisplayPerson(const string& name) const
+{
+	const PersonNode* person = FindPerson(name);
+	if (person != nullptr)
+	{
+		std::cout << "Name: " << person->GetName() << "\n";
+		std::cout << "Age: " << person->GetAge() << "\n" << std::endl;
+	}
+	else
+	{
+		std::cout << "Person not found" << std::endl;
+	}
+}
+
+bool AddressBookSLL::DeletePerson(const string& name)
+{
+	PersonNode* current = m_head;
+	PersonNode* previous = nullptr;
+
+	while (current != nullptr)
+	{
+		if (current->GetName() == name)
+		{
+			if (previous != nullptr)
+			{
+				previous->SetNext(current->GetNext());
+			}
+			else
+			{
+				m_head = current->GetNext();
+			}
+			delete current;
+			return true;
+		}
+		previous = current;
+		current = current->GetNext();
+	}
+	return false;
+}	
+```
+
+**main.cpp**
+```cpp
+
+#include <iostream>
+using namespace std;
+#include "AddressBookSLL.h"
+
+/*
+	This program will act as a Contacts Address Book using a Single Linked Lists
+*/
+
+int main(int argc, char **argv) {
+
+	AddressBookSLL book;
+
+	book.AddPerson("Darren", 21);
+	book.AddPerson("Dawn", 42);
+	book.AddPerson("Steven", 18);
+	book.AddPerson("Sue", 27);
+
+	book.DisplayAll();
+
+	book.DisplayPerson("Darren");
+
+	book.DeletePerson("Darren");
+
+	book.DisplayAll();
+
+	system("PAUSE");
+}
+```
+**Output**
+```
+Person 1
+Name: Darren
+Age: 21
+
+Person 2
+Name: Dawn
+Age: 42
+
+Person 3
+Name: Steven
+Age: 18
+
+Person 4
+Name: Sue
+Age: 27
+
+Name: Darren
+Age: 21
+
+Person 1
+Name: Dawn
+Age: 42
+
+Person 2
+Name: Steven
+Age: 18
+
+Person 3
+Name: Sue
+Age: 27
+
+Press any key to continue . . .
+```
+
+I will go through each of my new methods in my AddressBookSLL class.
+
+My ```DisplayAll``` method was the easiest for me to implement, I had actually already created it before I reached this section and saw it was a requirement because it made testing easier. First, it creates a PersonNode pointer called current and assigns it to the start of the list. Then it iterates through the list, printing out the data of each PersonNode until it reaches the final null pointer. I added an index here because I wanted to make sure it worked properly and was accurately displaying the index of each PersonNode.
+
+My method for finding a PersonNode using its name data has two parts. The first part is my ```FindPerson``` method where it creates a PersonNode pointer, assigns it to the head, then iterates through the list until it finds a PersonNode with the desired name data parameter. If it does, it returns the pointer, if not, it returns a null pointer. My second method ```DisplayPerson``` then takes this pointer to the PersonNode with the desired name, checks if it is null or not, and if not displays the details of the PersonNode at that pointer. If ```FindPerson``` could not find a PersonNode with the desired name, therefore passing it into ```DisplayPerson```, ```DisplayPerson``` accounts for this by printing 'Person not found' to the console.
+
+My method ```DeletePerson``` was for me the most confusing one out of the three, as it has too not only find the PersonNode with the desired name data, but also change the previous PersonNode to point to the PersonNode after the newly deleted one. It does this by keeping two pointers, 'current' and 'previous', iterating through the list with 'current' until it is able to find the name. If so, the PersonNode at 'previous' gets their 'next' pointer set to the PersonNode after 'current', so we can delete the PersonNode at 'current' and return true. If the PersonNode with the desired name is the first PersonNode after the head pointer (the first in the list), the program changes the head pointer to point to the PersonNode after the current one. If it cannot find a PersonNode with the desired name, it simply returns false. You can see how this one was the most complicated one to wrap my head around. 
 
 ---
