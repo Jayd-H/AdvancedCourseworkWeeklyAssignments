@@ -11,10 +11,10 @@ int main(int argc, char **argv) {
 
 	AddressBookSLL book;
 
-	book.AddPerson("John", 25);
-	book.AddPerson("Jane", 30);
-	book.AddPerson("Jim", 35);
-	book.AddPerson("Jill", 40);
+	book.AddPerson("Darren", 21);
+	book.AddPerson("Dawn", 42);
+	book.AddPerson("Steven", 18);
+	book.AddPerson("Sue", 27);
 
 	book.DisplayAll();
 

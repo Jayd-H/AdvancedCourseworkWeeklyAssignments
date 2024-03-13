@@ -9,7 +9,6 @@ public:
 	~AddressBookSLL(void);
 
 	void AddPerson(const string& name, int age);
-	void RemovePerson(const string& name);
 	void DisplayAll() const;
 
 private:

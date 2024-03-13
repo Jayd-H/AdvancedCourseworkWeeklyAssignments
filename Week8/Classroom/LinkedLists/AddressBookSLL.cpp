@@ -21,44 +21,31 @@ AddressBookSLL::~AddressBookSLL(void)
 void AddressBookSLL::AddPerson(const string& name, int age)
 {
 	PersonNode* newPerson = new PersonNode(name, age);
-	newPerson->SetNext(m_head);
-	m_head = newPerson;
-}
-
-void AddressBookSLL::RemovePerson(const string& name)
-{
-	PersonNode* current = m_head;
-	PersonNode* previous = nullptr;
-
-	while (current != nullptr)
+	if (m_head == nullptr)
 	{
-		if (current->GetName() == name)
+		m_head = newPerson;
+	}
+	else
+	{
+		PersonNode* current = m_head;
+		while (current->GetNext() != nullptr)
 		{
-			if (previous == nullptr)
-			{
-				m_head = current->GetNext();
-			}
-			else
-			{
-				previous->SetNext(current->GetNext());
-			}
-
-			delete current;
-			return;
+			current = current->GetNext();
 		}
-
-		previous = current;
-		current = current->GetNext();
+		current->SetNext(newPerson);
 	}
 }
 
 void AddressBookSLL::DisplayAll() const
 {
 	PersonNode* current = m_head;
+	int index = 1;
 
 	while (current != nullptr)
 	{
-		cout << current->GetName() << " is " << current->GetAge() << " years old." << endl;
+		std::cout << "Person " << index++ << "\n";
+		std::cout << "Name: " << current->GetName() << "\n";
+		std::cout << "Age: " << current->GetAge() << "\n" << std::endl;
 		current = current->GetNext();
 	}
 }
