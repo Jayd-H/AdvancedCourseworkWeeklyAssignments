@@ -78,3 +78,29 @@ void AddressBookSLL::DisplayPerson(const string& name) const
 		std::cout << "Person not found" << std::endl;
 	}
 }
+
+bool AddressBookSLL::DeletePerson(const string& name)
+{
+	PersonNode* current = m_head;
+	PersonNode* previous = nullptr;
+
+	while (current != nullptr)
+	{
+		if (current->GetName() == name)
+		{
+			if (previous != nullptr)
+			{
+				previous->SetNext(current->GetNext());
+			}
+			else
+			{
+				m_head = current->GetNext();
+			}
+			delete current;
+			return true;
+		}
+		previous = current;
+		current = current->GetNext();
+	}
+	return false;
+}	

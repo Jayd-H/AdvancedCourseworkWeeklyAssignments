@@ -20,6 +20,10 @@ int main(int argc, char **argv) {
 
 	book.DisplayPerson("Darren");
 
+	book.DeletePerson("Darren");
+
+	book.DisplayAll();
+
 	system("PAUSE");
 }
 
