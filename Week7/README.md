@@ -20,7 +20,7 @@ Restart Visual Studio and select `Parasoft->Peferences`, and select the `License
 
 Select `Use the following License Server` and then enter the Host name `dtp-parasoft.net.dcs.hull.ac.uk` and port number `2002`, `TCP/IP (legacy)` and hit `OK` then hit `Apply` - **for this to work you MUST to be connected to the University VPN using Global Connect**
 
-![alt text](README-parasoft.png "Parasoft Licence")
+![alt text](Classroom/README-parasoft.png "Parasoft Licence")
 
 Parasoft should now be installed and licensed (you may need to follow the next step before it is licensed)
 
@@ -60,13 +60,13 @@ To view these violations press the `Review Tasks` button.
 
 You should now select the drop down arrow and select Show -> Details as in Fig 1.
 
-![alt text](README-parasoft2.png "Autos Window")
+![alt text](Classroom/README-parasoft2.png "Autos Window")
 
 Fig 1. `Show` -> `Details`
 
 You should now right click in the **Quality Tasks** window and select `Layout` -> `Show` -> `Severity` as in Fig 2.
 
-![alt text](README-parasoft3.png "Autos Window")
+![alt text](Classroom/README-parasoft3.png "Autos Window")
 
 Fig 2. `Layout` -> `Show` -> `Severity`
 
