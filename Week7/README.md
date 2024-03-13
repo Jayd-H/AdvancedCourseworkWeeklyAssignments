@@ -95,3 +95,17 @@ Correct the other Severity 3 violations.  Do not worry about the other violation
 #### [Lab Book - Add screenshots of the Parasoft violation output.  Then describe the corrections you made to remove the Parasoft Severity 3 violations]
 
 ### Answer
+
+I have installed the test ruleset and applied it onto my Parasoft plugin for my VS 2019, however, I think newer versions of Parasoft, they have disabled the ability to get a network license as TCP/IP, meaning you have to use HTTP/HTTPS. 
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+![alt text](image-5.png)
