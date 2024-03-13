@@ -18,6 +18,8 @@ int main(int argc, char **argv) {
 
 	book.DisplayAll();
 
+	book.DisplayPerson("Darren");
+
 	system("PAUSE");
 }
 

@@ -50,3 +50,31 @@ void AddressBookSLL::DisplayAll() const
 	}
 }
 
+const PersonNode* AddressBookSLL::FindPerson(const string& name) const
+{
+	PersonNode* current = m_head;
+
+	while (current != nullptr)
+	{
+		if (current->GetName() == name)
+		{
+			return current;
+		}
+		current = current->GetNext();
+	}
+	return nullptr;
+}
+
+void AddressBookSLL::DisplayPerson(const string& name) const
+{
+	const PersonNode* person = FindPerson(name);
+	if (person != nullptr)
+	{
+		std::cout << "Name: " << person->GetName() << "\n";
+		std::cout << "Age: " << person->GetAge() << "\n" << std::endl;
+	}
+	else
+	{
+		std::cout << "Person not found" << std::endl;
+	}
+}
