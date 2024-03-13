@@ -347,7 +347,6 @@ I checked the contents of my outgrid.txt and saw this.
 7 8 9 1 2 3 4 5 6 
 8 9 1 2 3 4 5 6 7 
 9 1 2 3 4 5 6 7 8 
-
 ```
 
 Something has clearly gone wrong somewhere as the program is not correctly displaying or saving the appropriate numbers. I put a breakpoint on my ```LoadGrid()``` function and stepped through my program to ensure it was saving them as integers. The program was correctly saving them as float values, however, instead of saving the first number as 1.5, it was saving it as 1.0.
@@ -355,7 +354,7 @@ Something has clearly gone wrong somewhere as the program is not correctly displ
 
  ``` 		m_grid[y][x]	1.00000000	float ```
 
- I was really confused. I made a small if statement to check if ifstream was failing, I got into a small rabbithole about different locales and if the decimal point in my input file was throwing the system off track, I even made this small function to specifically test if it was an issue with my ```LoadGrid()``` function as a whole or if it was ifstream acting funky.
+ I was really confused. I made a small if statement to check if ifstream was failing, I got into a small rabbit hole about different locales and if the decimal point in my input file was throwing the system off track, I even made this small function to specifically test if it was an issue with my ```LoadGrid()``` function as a whole or if it was ifstream acting funky.
 
  ```cpp
 float LoadSingleNumber(const char* filename) {
@@ -368,6 +367,78 @@ float LoadSingleNumber(const char* filename) {
 
 To no avail, even this function was returning a float of 1.0 rather than 1.5. I know the answer would probably be obvious to me in a few weeks, but unfortunately as of right now I am not a few weeks older. 
 
+#### Update: A day later
+
+through my git commit history, I figured out why my program was not functioning as intended. As it turns out I was editing the grid1.txt file of 2 weeks ago, not the one that this program is using. I realised this, changed this weeks grid1.txt, ran my program, and it performed as expected.
+
+**main.cpp**
+```cpp
+#include <iostream>
+#include "Grid.h"
+
+float LoadSingleNumber(const char* filename) {
+	std::ifstream fileStream(filename);
+	float number;
+	fileStream >> number;
+	return number;
+}
+
+int main(int, char**) {
+	Grid<float> grid;
+	grid.LoadGrid("Grid1.txt");
+	std::cout << grid;
+	grid.SaveGrid("OutGrid.txt");
+
+	//float num = LoadSingleNumber("Grid1.txt");
+	//std::cout << num << std::endl;
+	return 0;
+}
+```
+
+**Output**
+```
+1.5 2 3 4 5 6 7 8 9
+2 3 4 5 6 7 8 9 1
+3 4 5 6 7 8 9 1 2
+4 5 6 7 8 9 1 2 3
+5 6 7 8 9.99 1 2 3 4
+6 7 8 9 1 2 3 4 5
+7 8 9 1 2 3.14 4 5 6
+8 9 1 2 3 4 5 6 7
+9 1 2 3 4 5 6 7 8
+
+D:\Files\Documents\#UNIY2\AP\AdvancedCourseworkWeeklyAssignments\Week6\Classroom\Debug\Grid.exe (process 22260) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .
+```
+
+**grid1.txt**
+```
+1.5 2 3 4 5 6 7 8 9
+2 3 4 5 6 7 8 9 1
+3 4 5 6 7 8 9 1 2
+4 5 6 7 8 9 1 2 3
+5 6 7 8 9.99 1 2 3 4
+6 7 8 9 1 2 3 4 5
+7 8 9 1 2 3.14 4 5 6
+8 9 1 2 3 4 5 6 7
+9 1 2 3 4 5 6 7 8
+```
+
+**outgrid.txt**
+```
+1.5 2 3 4 5 6 7 8 9 
+2 3 4 5 6 7 8 9 1 
+3 4 5 6 7 8 9 1 2 
+4 5 6 7 8 9 1 2 3 
+5 6 7 8 9.99 1 2 3 4 
+6 7 8 9 1 2 3 4 5 
+7 8 9 1 2 3.14 4 5 6 
+8 9 1 2 3 4 5 6 7 
+9 1 2 3 4 5 6 7 8 
+```
+
+I thought about deleting the previous section and rewriting all of this, as it almost seems pointless to keep in. However, I think it is funny and a good example that sometimes all it takes is a step back and a day or two for the solution to be painfully obvious.
 ## Q3. Binary search
 
 ### Question
@@ -594,6 +665,6 @@ Although it was fun to implement a binary search in a recursive way, I do not se
 
 ## Reflection
 
-Throughout this lab I have furthered my knowledge of templates, and the different ways to implement binary search in C++. I am admittedly a little upset that I could not figure out the error in question 2, but like I said previously, I reckon with a little more knowledge on the topic it would be obvious. I really like the notion of templates and I can't wait to use them at scale in bigger projects. Even though I have implemented binary searches in other languages before, it is nice to see how that translates to C++. At this current stage, even though I am still reliant on a search bar for more complex questions, I feel like I am making steady progress.
+Throughout this lab I have furthered my knowledge of templates, and the different ways to implement binary search in C++. Even though it took an extra to day to realise my simple mistake on the grid question, I really like the notion of templates and I can't wait to use them at scale in bigger projects. Despite having implemented binary searches in other languages before, it is nice to see how that translates to C++. At this current stage, despite the fact I am still admittedly somewhat reliant on a search bar for more complex questions and explanations to more advanced topics to fully understand them, I feel like I am making steady progress.
 
-The more time I spend with C++, the more I enjoy it and the more intuitive it is to write and read. Like I say every time in these labs, I know I have a long way to go with this language and even programming in general, but the way these labs are structured I find it much easier to digest these topics. 
+The more time I spend with C++, the more I enjoy it and the more intuitive it is to write and read. Like I say every time in these labs, I know I have a long way to go with this language and even programming in general, but the way these labs are structured I find it much easier to digest these topics presented. 
